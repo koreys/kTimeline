@@ -180,8 +180,10 @@
 							<CFSET userSearchURL = "https://api.instagram.com/v1/users/search?q=#un#&count=1&access_token=#URL.access_token#">
 							<cfhttp url="#userSearchURL#" method="get" resolveurl="true" result="userSearch"/>
 							<CFSET userDetails = deserializeJSON(#userSearch.fileContent#)>
-							<!---<CFDUMP var="#userDetails#">--->
-							<CFSET newCaptionTxt = #REPLACE(#newCaptionTxt#, #un#, "<a href='userfeed.cfm?access_token=#URL.access_token#&userid=#userDetails.data[1].id#&user=#userDetails.data[1].full_name#'>" & #un# & "</a>")#>
+							<CFDUMP var="#userDetails#">
+							<CFIF isDefined("userDetails.data[1].id")>
+								<CFSET newCaptionTxt = #REPLACE(#newCaptionTxt#, #un#, "<a href='userfeed.cfm?access_token=#URL.access_token#&userid=#userDetails.data[1].id#&user=#userDetails.data[1].full_name#'>" & #un# & "</a>")#>
+							</CFIF>
 						</CFLOOP>
 				<!---End Search for usernames --->
 
@@ -197,13 +199,13 @@
 						</CFLOOP>
 						<!---<CFDUMP var="#tagsAr#">--->
 						<CFLOOP array="#tagsAr#" index="tag">
-							<CFSET newCaptionTxt = #REPLACE(#newCaptionTxt#, #tag#, "<a href=''>" & #tag# & "</a>")#>
+							<CFSET newCaptionTxt = #REPLACE(#newCaptionTxt#, #tag#, "<a href='hashtag.cfm?access_token=#URL.access_token#&hashtag=#tag#'>" & #tag# & "</a>")#>
 						</CFLOOP>
 				<!---End Search for hashtags --->
 				#newCaptionTxt#<br>
 			</CFIF>
 			<CFLOOP from="1" to="#commentsLen#" index="i">
-				<b>#imgDetails.data.comments.data[#i#].from.full_name#</b>
+				<b><a href="userfeed.cfm?access_token=#URL.access_token#&userid=#imgDetails.data.comments.data[#i#].from.id#&user=#imgDetails.data.comments.data[#i#].from.full_name#">#imgDetails.data.comments.data[#i#].from.full_name#</a></b>
 				#imgDetails.data.comments.data[#i#].text#<br />
 			</CFLOOP>
 			<br>

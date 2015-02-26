@@ -1,5 +1,5 @@
 <cfcomponent output="false">
-	
+
 	<!--- Application name, should be unique --->
 	<cfset this.name = "kTimeline">
 	<!--- How long application vars persist --->
@@ -31,15 +31,15 @@
 
 <cffunction name="OnRequestStart">
    <!--- OnRequestStart body goes here --->
-   
+
    <!--- Code for FCKeditor --->
    <cflock scope="Application" type="exclusive" timeout="5">
 	 <cfset APPLICATION.userFilesPath = "/UserFiles/">
    </cflock>
    <!--- End Code for FCKeditor--->
-   
-   
-   
+
+
+
    <CFIF #TRIM(Left(cgi.SCRIPT_NAME, 12))# EQ '/priceupdate'>
 		<cfinclude template="">
    <CFELSE>

@@ -18,7 +18,7 @@
 <cfhttp url="#feedURL#" method="get" resolveurl="true" />
 <HTML>
 <head>
-	<title>User Feed</title>
+	<title>Image Feed</title>
 	<style>
 		.instaImgDiv {
 			width: 346px;
@@ -57,9 +57,18 @@
 	Status Code: #cfhttp.statusCode#<br />
 	Current feedURL: #feedURL#<br>
 	--->
-	<CFSET UserFeed = deserializeJSON(#cfhttp.fileContent#)>
-	<!---<CFDUMP var="#UserFeed#">--->
+ <CFSET UserFeed = deserializeJSON(#cfhttp.fileContent#)>
+ <!---<CFDUMP var="#UserFeed#"> --->
 
+	<CFIF isDefined("userFeed.meta.error_message")>
+			<CFIF TRIM(userFeed.meta.error_message) EQ TRIM("you cannot view this resource")>
+				<h3>Sorry the user is private</h3>
+				<CFABORT>
+			<CFELSE>
+				Error: #userFeed.meta.error_message#<br>
+				<CFABORT>
+			</CFIF>
+  </CFIF>
 	<cfset myArrayLen = #arraylen(userfeed.data)#>
 
 	<div id="feedDiv">
