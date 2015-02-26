@@ -26,7 +26,7 @@
 			padding-left: 20px;
 			padding-right: 20px;
 			border: 0px solid blue;
-			margin-bottom: 15px; 
+			margin-bottom: 15px;
 		}
 		.nameBlock {
 			display: inline;
@@ -48,7 +48,7 @@
 		#userTitle {
 			margin-left: 20px;
 		}
-		
+
 	</style>
 </head>
 <body>
@@ -59,9 +59,9 @@
 	--->
 	<CFSET UserFeed = deserializeJSON(#cfhttp.fileContent#)>
 	<!---<CFDUMP var="#UserFeed#">--->
-	
+
 	<cfset myArrayLen = #arraylen(userfeed.data)#>
-	
+
 	<div id="feedDiv">
 	<h2 id="userTitle">#URL.user# Recent Images</h2>
 	<CFLOOP From="1" to="#myArrayLen#" index="i">
@@ -80,6 +80,8 @@
 	<div style="clear:both"></div>
 	</div>
 	<br>
-	<a href="userfeed.cfm?max_id=#userfeed.pagination.next_max_id#&access_token=#URL.access_token#&user=#URL.user#">See More</a>
+	<CFIF isDefined("userfeed.pagination.next_max_id")>
+		 <a href="userfeed.cfm?max_id=#userfeed.pagination.next_max_id#&access_token=#URL.access_token#&user=#URL.user#">See More</a>
+	</CFIF>
 </CFOUTPUT>
 </body>
