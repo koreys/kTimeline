@@ -3,15 +3,15 @@
 
 <CFIF URL.userid EQ "">
 	<CFIF URL.max_id NEQ "">
-		<CFSET feedURL = "https://api.instagram.com/v1/users/self/feed?access_token=#URL.access_Token#&max_id=#URL.max_id#">
+		<CFSET feedURL = "https://api.instagram.com/v1/users/self/feed?access_token=#cookie.instaAccessCode#&max_id=#URL.max_id#">
 	<CFELSE>
-		<CFSET feedURL = "https://api.instagram.com/v1/users/self/feed?access_token=#URL.access_Token#">
+		<CFSET feedURL = "https://api.instagram.com/v1/users/self/feed?access_token=#cookie.instaAccessCode#">
 	</CFIF>
 <CFELSE>
 	<CFIF URL.max_id NEQ "">
-		<CFSET feedURL = "https://api.instagram.com/v1/users/#URL.userid#/media/recent/?access_token=#URL.access_Token#&max_id=#URL.max_id#">
+		<CFSET feedURL = "https://api.instagram.com/v1/users/#URL.userid#/media/recent/?access_token=#cookie.instaAccessCode#&max_id=#URL.max_id#">
 	<CFELSE>
-		<CFSET feedURL = "https://api.instagram.com/v1/users/#URL.userid#/media/recent/?access_token=#URL.access_Token#">
+		<CFSET feedURL = "https://api.instagram.com/v1/users/#URL.userid#/media/recent/?access_token=#cookie.instaAccessCode#">
 	</CFIF>
 </CFIF>
 
@@ -58,7 +58,7 @@
 	Current feedURL: #feedURL#<br>
 	--->
  <CFSET UserFeed = deserializeJSON(#cfhttp.fileContent#)>
- <!---<CFDUMP var="#UserFeed#"> --->
+ <!---<CFDUMP var="#UserFeed#">--->
 
 	<CFIF isDefined("userFeed.meta.error_message")>
 			<CFIF TRIM(userFeed.meta.error_message) EQ TRIM("you cannot view this resource")>
@@ -81,7 +81,7 @@
 			<div class="likesAndCommentBlock">
 				<i class="fa fa-heart" style="color: red;"></i>  #userfeed.data[#i#].likes.count# | <i class="fa fa-comment"></i> #userfeed.data[#i#].comments.count#
 			</div>
-			<a href="imgDetail.cfm?imgID=#userfeed.data[#i#].id#&access_token=#URL.access_token#">
+			<a href="imgDetail.cfm?imgID=#userfeed.data[#i#].id#&access_token=#cookie.instaAccessCode#">
 		    	<img class="instaImg" src="#userfeed.data[#i#].images.low_resolution.url#">
 		    </a>
 		</div>
@@ -90,7 +90,7 @@
 	</div>
 	<br>
 	<CFIF isDefined("userfeed.pagination.next_max_id")>
-		 <a href="userfeed.cfm?max_id=#userfeed.pagination.next_max_id#&access_token=#URL.access_token#&user=#URL.user#">See More</a>
+		 <a href="userfeed.cfm?max_id=#userfeed.pagination.next_max_id#&access_token=#cookie.instaAccessCode#&user=#URL.user#">See More</a>
 	</CFIF>
 </CFOUTPUT>
 </body>

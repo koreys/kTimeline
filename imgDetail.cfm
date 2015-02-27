@@ -36,7 +36,7 @@
 
 		    <CFIF isDefined("imgDetails.data.location.name")>
 				var infowindow = new google.maps.InfoWindow({
-					content: "<i class='icon-map-marker'></i> <b><cfoutput>#imgDetails.data.location.name#</cfoutput></b>",
+					content: "<i class='fa fa-map-marker'></i> <b><cfoutput>#imgDetails.data.location.name#</cfoutput></b>",
 					position: myLatlng
 				});
 				infowindow.open(map);
@@ -131,7 +131,7 @@
 	--->
 	<div class="instaImgDiv">
 		<div class="nameBlock">
-			<h2>#imgDetails.data.user.full_name#</h2>
+			<h2 style="margin-left:10px;">#imgDetails.data.user.full_name#</h2>
 		</div>
 		<div id="profileCol">
 		 	<img src="#imgDetails.data.user.profile_picture#" class="profilePic">
@@ -139,17 +139,20 @@
 				<i class="fa fa-heart" style="color: red;"></i>  #imgDetails.data.likes.count# | <i class="fa fa-comment"></i> #imgDetails.data.comments.count#
 				<br>&nbsp;<br>
 				<b>Filter:</b> #imgDetails.data.filter#<br>
-				<b>Search Tags:</b><br>
-				<cfset tagsArrayLen = #ARRAYLEN(imgDetails.data.tags)#>
-				<cfloop from="1" to="#tagsArrayLen#" index="x">
-					#imgDetails.data.tags[#x#]#<br>
+				<b>Likes:</b><br>
+				<cfset likesArrayLen = #ARRAYLEN(imgDetails.data.likes.data)#>
+				<cfloop from="1" to="#likesArrayLen#" index="x">
+					<a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.likes.data[#x#].id#&user=#imgDetails.data.likes.data[#x#].full_name#">#imgDetails.data.likes.data[#x#].full_name#</a><br>
 				</cfloop>
-				<br>
+				<CFIF  #imgDetails.data.likes.count# GT #likesArrayLen#>
+					<a href="likes.cfm?mediaID=#URL.imgID#&likesCount=#imgDetails.data.likes.count#&imgURL=#imgDetails.data.images.low_resolution.url#"><small><b>See All Likes...</b></small></a>
+				</CFIF>
+				<br>&nbsp;<br>
 				<CFIF #ARRAYLEN(imgDetails.data.users_in_photo)# GT 0>
 					<b>Tagged in Photo:</b><br>
 					<CFSET taggedLen = ARRAYLEN(imgDetails.data.users_in_photo)>
 					<CFLOOP from="1" to="#taggedLen#" index="t">
-						#imgDetails.data.users_in_photo[#t#].user.full_name#<br>
+						<a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.users_in_photo[#t#].user.id#&user=#imgDetails.data.users_in_photo[#t#].user.full_name#">#imgDetails.data.users_in_photo[#t#].user.full_name#</a><br>
 					</CFLOOP>
 				</CFIF>
 
@@ -180,7 +183,7 @@
 							<CFSET userSearchURL = "https://api.instagram.com/v1/users/search?q=#un#&count=1&access_token=#URL.access_token#">
 							<cfhttp url="#userSearchURL#" method="get" resolveurl="true" result="userSearch"/>
 							<CFSET userDetails = deserializeJSON(#userSearch.fileContent#)>
-							<CFDUMP var="#userDetails#">
+							<!---<CFDUMP var="#userDetails#">--->
 							<CFIF isDefined("userDetails.data[1].id")>
 								<CFSET newCaptionTxt = #REPLACE(#newCaptionTxt#, #un#, "<a href='userfeed.cfm?access_token=#URL.access_token#&userid=#userDetails.data[1].id#&user=#userDetails.data[1].full_name#'>" & #un# & "</a>")#>
 							</CFIF>
@@ -208,10 +211,15 @@
 				<b><a href="userfeed.cfm?access_token=#URL.access_token#&userid=#imgDetails.data.comments.data[#i#].from.id#&user=#imgDetails.data.comments.data[#i#].from.full_name#">#imgDetails.data.comments.data[#i#].from.full_name#</a></b>
 				#imgDetails.data.comments.data[#i#].text#<br />
 			</CFLOOP>
+			<CFIF isDeFined("imgDetails.data.comments.count")>
+				<CFIF #imgDetails.data.comments.count# GT #commentsLen#>
+					<a href="comments.cfm">See More Comments...</a>
+				</CFIF>
+	  	</CFIF>
 			<br>
 			<CFIF noLocation EQ "false">
 				<CFIF #IsDefined("imgDetails.data.location.name")#>
-					<i class="icon-map-marker"></i> <b>#imgDetails.data.location.name#</b>
+					<i class="fa fa-map-marker"></i> <b>#imgDetails.data.location.name#</b>
 				<CFELSE>
 					<b>Location</b>
 				</CFIF>
@@ -222,7 +230,7 @@
 
 	</div>
 
-	<CFDUMP var="#imgDetails#">
+	<!---<CFDUMP var="#imgDetails#">--->
 </CFOUTPUT>
 
 </body>

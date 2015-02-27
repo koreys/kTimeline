@@ -26,7 +26,8 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		  <ul class="nav navbar-nav">
 			<li class="active"><a href="#myFeedHref#">My Timeline</a></li>
-			<li><a href="##">Link</a></li>
+			<li><a href="logout.cfm">Log Out</a></li>
+			<!---
 			<li class="dropdown">
 			  <a href="##" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
 			  <ul class="dropdown-menu" role="menu">
@@ -39,14 +40,16 @@
 				<li><a href="##">One more separated link</a></li>
 			  </ul>
 			</li>
+			--->
 		  </ul>
+			<!---
 		  <form class="navbar-form navbar-right" role="search">
 			<div class="form-group">
 			  <input type="text" class="form-control" placeholder="Search">
 			</div>
 			<button type="submit" class="btn btn-default">Submit</button>
 		  </form>
-
+			--->
 		</div><!-- /.navbar-collapse -->
     </div><!-- /container-fluid -->
 </div><!-- /navbar -->
