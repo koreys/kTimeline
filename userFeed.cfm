@@ -48,6 +48,7 @@
 		#userTitle {
 			margin-left: 20px;
 		}
+
 	</style>
 </head>
 <body>
@@ -92,4 +93,6 @@
 		 <a href="userfeed.cfm?max_id=#userfeed.pagination.next_max_id#&access_token=#cookie.instaAccessCode#&user=#URL.user#">See More</a>
 	</CFIF>
 </CFOUTPUT>
+
 </body>
+</html>

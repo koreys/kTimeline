@@ -30,7 +30,7 @@
 		--->
 
 			<CFIF  #cfhttp.statusCode# NEQ '200 OK'>
-				ERROR!!<br>
+				ERROR! <br>
 				Error msg is: #OAuthToken.error_message#<br>
 			<CFELSE>
 				<!---
