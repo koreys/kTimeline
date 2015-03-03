@@ -48,7 +48,6 @@
 		#userTitle {
 			margin-left: 20px;
 		}
-
 	</style>
 </head>
 <body>
@@ -90,7 +89,7 @@
 	</div>
 	<br>
 	<CFIF isDefined("userfeed.pagination.next_max_id")>
-		 <a href="userfeed.cfm?max_id=#userfeed.pagination.next_max_id#&access_token=#cookie.instaAccessCode#&user=#URL.user#&userId=#URL.userid#">See More</a>
+		 <a href="userfeed.cfm?max_id=#userfeed.pagination.next_max_id#&access_token=#cookie.instaAccessCode#&user=#URL.user#">See More</a>
 	</CFIF>
 </CFOUTPUT>
 </body>
