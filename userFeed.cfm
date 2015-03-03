@@ -18,8 +18,28 @@
 <cfhttp url="#feedURL#" method="get" resolveurl="true" />
 <HTML>
 <head>
-	<title>Image Feed</title>
+	<title>Image Feed - Beta 1.1 Built: 3.3.15 </title>
 	<style>
+		.profilePic {
+			width: 125px;
+			margin-left: 20px;
+			margin-bottom: 15px;
+			border: 1px solid black;
+			float: left;
+		}
+		.profileLinkDiv {
+			float: left;
+			margin-left: 20px;
+			border: 0px solid red;
+			width: 95%;
+		}
+		.countsDiv {
+			float: left;
+			margin-left: 20px;
+			margin-bottom: 10px;
+			border: 0px solid red;
+			width: 95%;
+		}
 		.instaImgDiv {
 			width: 346px;
 			float: left;
@@ -27,6 +47,15 @@
 			padding-right: 20px;
 			border: 0px solid blue;
 			margin-bottom: 15px;
+		}
+		.moreDiv {
+			width: 306px;
+			height: 306px;
+			padding-top: 45px;
+			margin-top: 20px;
+			border: 2px solid black;
+			font-size: 50px;
+			color: #CCC;
 		}
 		.nameBlock {
 			display: inline;
@@ -47,6 +76,15 @@
 		}
 		#userTitle {
 			margin-left: 20px;
+			margin-top: 0px;
+			float: left;
+			width: 95%;
+		}
+		#profileInfoContainer {
+			width: 80%;
+			border: 0px solid green;
+			float: left;
+			height: 125px;
 		}
 
 	</style>
@@ -57,6 +95,7 @@
 	Status Code: #cfhttp.statusCode#<br />
 	Current feedURL: #feedURL#<br>
 	--->
+
  <CFSET UserFeed = deserializeJSON(#cfhttp.fileContent#)>
  <!---<CFDUMP var="#UserFeed#">--->
 
@@ -72,7 +111,32 @@
 	<cfset myArrayLen = #arraylen(userfeed.data)#>
 
 	<div id="feedDiv">
-	<h2 id="userTitle">#URL.user# Recent Images</h2>
+
+	<CFIF URL.userid EQ "">
+		<CFSET userInfoURL = "https://api.instagram.com/v1/users/#cookie.instaMyID#/?access_token=#cookie.instaAccessCode#">
+	<CFELSE>
+		<CFSET userInfoURL = "https://api.instagram.com/v1/users/#URL.userid#/?access_token=#cookie.instaAccessCode#">
+	</CFIF>
+
+	<cfhttp url="#userInfoURL#" method="get" resolveurl="true" result="userInfo"/>
+	<CFSET currentUserInfo = deserializeJSON(#userInfo.fileContent#)>
+
+  <img src="#currentUserInfo.data.profile_picture#" class="profilePic">
+	<div id="profileInfoContainer">
+			<h2 id="userTitle">#currentUserInfo.data.full_name# Image Feed</h2>
+			<br />
+			<div class="countsDiv">
+				<span class="label label-success">Images: #currentUserInfo.data.counts.media#</span>
+				<span class="label label-info">Following: #currentUserInfo.data.counts.follows#</span>
+				<span class="label label-primary">Followers: #currentUserInfo.data.counts.followed_by#</span>
+		  </div>
+			<div class="profileLinkDiv">
+				<a href="userProfile.cfm?accessCode=#currentUserInfo.data.id#" class="btn btn-default"><i class="fa fa-user"></i> View Profile</a>
+			</div>
+
+  </div>
+
+	<div style="clear:both;"></div>
 	<CFLOOP From="1" to="#myArrayLen#" index="i">
 		<div class="instaImgDiv">
 			<div class="nameBlock">
@@ -86,12 +150,20 @@
 		    </a>
 		</div>
 	</CFLOOP>
+
+	<div class="instaImgDiv">
+		<div class="moreDiv">
+			<center>
+				<CFIF isDefined("userfeed.pagination.next_max_id")>
+				  <a href="userfeed.cfm?max_id=#userfeed.pagination.next_max_id#&access_token=#cookie.instaAccessCode#&user=#URL.user#&userid=#URL.userid#"><i class="fa fa-play-circle-o fa-3x"></i><br>Next</a>
+			  </CFIF>
+			</center>
+		</div>
+	</div>
+
 	<div style="clear:both"></div>
 	</div>
 	<br>
-	<CFIF isDefined("userfeed.pagination.next_max_id")>
-		 <a href="userfeed.cfm?max_id=#userfeed.pagination.next_max_id#&access_token=#cookie.instaAccessCode#&user=#URL.user#&userid=#URL.userid#">See More</a>
-	</CFIF>
 </CFOUTPUT>
 
 </body>

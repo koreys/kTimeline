@@ -180,7 +180,7 @@
 						<CFSET newCaptionTxt = "#imgDetails.data.caption.text#">
 						<CFLOOP array="#userNameAr#" index="un">
 
-							<CFSET userSearchURL = "https://api.instagram.com/v1/users/search?q=#un#&count=1&access_token=#URL.access_token#">
+							<CFSET userSearchURL = "https://api.instagram.com/v1/users/search?q=#un#&count=1&access_token=#cookie.instaAccessCode#">
 							<cfhttp url="#userSearchURL#" method="get" resolveurl="true" result="userSearch"/>
 							<CFSET userDetails = deserializeJSON(#userSearch.fileContent#)>
 							<!---<CFDUMP var="#userDetails#">--->

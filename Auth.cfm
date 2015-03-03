@@ -41,7 +41,8 @@
 				--->
 				<CFCOOKIE name="instaAccessCode" value="#OAuthToken.access_token#">
 				<CFCOOKIE name="instaFullName" value="#OAuthToken.user.full_name#">
-				<CFCOOKIE name="instaProfilePic" value="#OAuthToken.user.profile_picture#"
+				<CFCOOKIE name="instaProfilePic" value="#OAuthToken.user.profile_picture#">
+				<CFCOOKIE name="instaMyID" value="#OAuthToken.user.id#">
 				<CFLOCATION URL="userfeed.cfm?access_Token=#OAuthToken.access_token#&user=#OAuthToken.user.full_name#" />
 			</CFIF>
 

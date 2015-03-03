@@ -25,7 +25,7 @@
 
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		  <ul class="nav navbar-nav">
-			<li class="active"><a href="#myFeedHref#">My Timeline</a></li>
+			<li class="active"><a href="#myFeedHref#">My Image Feed</a></li>
 			<li><a href="logout.cfm">Log Out</a></li>
 			<!---
 			<li class="dropdown">
