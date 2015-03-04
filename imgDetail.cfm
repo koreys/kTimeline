@@ -58,64 +58,15 @@
     </CFIF>
 
 	<style>
-		.instaImgDiv {
-			width: 846px;
-			float: left;
-			padding-left: 20px;
-			padding-right: 20px;
-			border: 0px dashed blue;
-		}
-		.nameBlock {
-			display: block;
-			border: 0px dashed green;
-		}
-		#profileCol {
-			width: 140px;
-			height: 645px;
-			float: left;
-			border: 0px solid red;
-		}
-		#imgCol {
-			width: 660px;
-			height: 645px;
-			float: left;
-			border: 0px solid red;
 
+		.container {
+			max-width: 720px;
 		}
-		#commentsDiv {
-			width: 660px;
-			margin-left: 140px;
-			border: 0px solid blue;
-			float: left;
-			padding-left: 10px;
-			padding-right: 10px;
-		}
-		.instaImg {
-			border: 2px solid black;
-			margin-left: 10px;
-		}
-		.profilePic {
-			border: 1px solid black;
-			width: 120px;
-			margin-left: 10px;
-		}
-		#feedDiv {
-			border:0px solid red;
-		}
-		#userTitle {
-			margin-left: 20px;
-		}
-		.likesAndCommentBlock {
-			display: inline;
-			border: 0px dashed red;
-			float: left;
-			margin-left: 10px;
-		}
+
+
 		#map-canvas {
-			width: 640px;
-			height: 500px;
-			margin-left: 150px;
-			float: left;
+			width: 680px;
+			height: 520px;
 		}
 		#map-canvas img {
 			max-width: none;
@@ -128,111 +79,123 @@
 	<!---
 	Status Code: #cfhttp.statusCode#<br />
 	--->
-	<div class="instaImgDiv">
-		<div class="nameBlock">
-			<h2 style="margin-left:10px;">#imgDetails.data.user.full_name#
-				<small>
-					<a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.user.id#&user=#imgDetails.data.user.full_name#">(#imgDetails.data.user.username#)</a>
-				</small>
-			</h2>
-		</div>
-		<div id="profileCol">
-		 	<img src="#imgDetails.data.user.profile_picture#" class="profilePic">
-		 	<div class="likesAndCommentBlock">
+	<div class="container" style="border:0px dashed grey;">
+			<div class="jumbotron">
+				<img src="#imgDetails.data.user.profile_picture#" class="img-thumbnail" style="float:left;margin-right:20px;">
+				<h2 style="display:inline;">
+						#imgDetails.data.user.full_name#
+						<small>
+							<a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.user.id#&user=#imgDetails.data.user.full_name#">(#imgDetails.data.user.username#)</a>
+						</small>
+				</h2>
+				<br />
 				<i class="fa fa-heart" style="color: red;"></i> #imgDetails.data.likes.count# | <i class="fa fa-comment"></i> #imgDetails.data.comments.count#
-				<br>&nbsp;<br>
-				<b>Filter:</b> #imgDetails.data.filter#<br>
-				<b>Posted:</b><br />#dateTimeFormat(dateAdd("s", #imgDetails.data.created_time#, DateConvert("utc2Local", createDateTime(1970, 1, 1, 0,0,0))), 'short')#<br />
-				<b>Likes:</b><br>
+				<br />
+				<b>Filter:</b> #imgDetails.data.filter#
+				<br />
+				<b>Posted:</b> #dateTimeFormat(dateAdd("s", #imgDetails.data.created_time#, DateConvert("utc2Local", createDateTime(1970, 1, 1, 0,0,0))), 'short')#
+
+				<div style="clear:both;"></div>
+			</div><!-- End Jumbotron -->
+
+
+			<img src="#imgDetails.data.images.standard_resolution.url#" class="center-block">
+
+			<div class="well well-sm" style="margin-top:5px;">
+				<b>Likes:</b>
 				<cfset likesArrayLen = #ARRAYLEN(imgDetails.data.likes.data)#>
 				<cfloop from="1" to="#likesArrayLen#" index="x">
-					<a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.likes.data[#x#].id#&user=#imgDetails.data.likes.data[#x#].full_name#">#imgDetails.data.likes.data[#x#].full_name#</a><br>
+						<a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.likes.data[#x#].id#&user=#imgDetails.data.likes.data[#x#].full_name#">#imgDetails.data.likes.data[#x#].full_name#</a>,
 				</cfloop>
 				<CFIF  #imgDetails.data.likes.count# GT #likesArrayLen#>
-					<a href="likes.cfm?mediaID=#URL.imgID#&likesCount=#imgDetails.data.likes.count#&imgURL=#imgDetails.data.images.low_resolution.url#"><small><b>See All Likes...</b></small></a>
+						<a href="likes.cfm?mediaID=#URL.imgID#&likesCount=#imgDetails.data.likes.count#&imgURL=#imgDetails.data.images.low_resolution.url#"><small><b>...See All Likes</b></small></a>
 				</CFIF>
-				<br>&nbsp;<br>
+
 				<CFIF #ARRAYLEN(imgDetails.data.users_in_photo)# GT 0>
-					<b>Tagged in Photo:</b><br>
-					<CFSET taggedLen = ARRAYLEN(imgDetails.data.users_in_photo)>
-					<CFLOOP from="1" to="#taggedLen#" index="t">
-						<a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.users_in_photo[#t#].user.id#&user=#imgDetails.data.users_in_photo[#t#].user.full_name#">#imgDetails.data.users_in_photo[#t#].user.full_name#</a><br>
-					</CFLOOP>
+						<br />
+						<b>Tagged in Photo:</b><br>
+						<CFSET taggedLen = ARRAYLEN(imgDetails.data.users_in_photo)>
+						<CFLOOP from="1" to="#taggedLen#" index="t">
+								<a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.users_in_photo[#t#].user.id#&user=#imgDetails.data.users_in_photo[#t#].user.full_name#">#imgDetails.data.users_in_photo[#t#].user.full_name#,</a>
+						</CFLOOP>
 				</CFIF>
 
+			</div><!-- End Likers Well -->
+
+
+			<div id="commentsDiv">
+				<CFSET commentsLen = ARRAYLEN(imgDetails.data.comments.data)>
+				<CFIF isDefined("imgDetails.data.caption.from.full_name")>
+					<b><a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.user.id#&user=#imgDetails.data.user.full_name#">#imgDetails.data.caption.from.full_name#</a></b>
+					<!--- search Caption for @ usernames --->
+							<cfset captionArray = #listToArray(imgDetails.data.caption.text, " ")#>
+							<cfset captionArLen = ArrayLen(captionArray)>
+							<!---<CFDUMP var="#captionArray#">--->
+							<CFSET userNameAr = arrayNew(1)>
+							<CFLOOP from="1" To="#captionArLen#" index="x">
+								<CFIF TRIM(LEFT(captionArray[#x#],1)) EQ "@">
+									<CFSET temp = ArrayAppend(userNameAr, #captionArray[#x#]#)>
+								</CFIF>
+							</CFLOOP>
+							<!---<CFDUMP var="#userNameAr#">--->
+							<CFSET newCaptionTxt = "#imgDetails.data.caption.text#">
+							<CFLOOP array="#userNameAr#" index="un">
+
+								<CFSET userSearchURL = "https://api.instagram.com/v1/users/search?q=#un#&count=1&access_token=#cookie.instaAccessCode#">
+								<cfhttp url="#userSearchURL#" method="get" resolveurl="true" result="userSearch"/>
+								<CFSET userDetails = deserializeJSON(#userSearch.fileContent#)>
+								<!---<CFDUMP var="#userDetails#">--->
+								<CFIF isDefined("userDetails.data[1].id")>
+									<CFSET newCaptionTxt = #REPLACE(#newCaptionTxt#, #un#, "<a href='userfeed.cfm?access_token=#URL.access_token#&userid=#userDetails.data[1].id#&user=#userDetails.data[1].full_name#'>" & #un# & "</a>")#>
+								</CFIF>
+							</CFLOOP>
+					<!---End Search for usernames --->
+
+					<!--- search Caption for Hashtags --->
+							<cfset hashtagArray = #listToArray(newCaptionTxt, " ")#>
+							<cfset hashtagArLen = ArrayLen(hashtagArray)>
+							<!---<CFDUMP var="#hashtagArray#">--->
+							<CFSET tagsAr = arrayNew(1)>
+							<CFLOOP from="1" To="#hashtagArLen#" index="x">
+								<CFIF TRIM(LEFT(hashtagArray[#x#],1)) EQ "##">
+									<CFSET temp = ArrayAppend(tagsAr, #hashtagArray[#x#]#)>
+								</CFIF>
+							</CFLOOP>
+							<!---<CFDUMP var="#tagsAr#">--->
+							<CFLOOP array="#tagsAr#" index="tag">
+								<CFSET newCaptionTxt = #REPLACE(#newCaptionTxt#, #tag#, "<a href='hashtag.cfm?access_token=#URL.access_token#&hashtag=#tag#'>" & #tag# & "</a>")#>
+							</CFLOOP>
+					<!---End Search for hashtags --->
+					#newCaptionTxt#<br>
+				</CFIF>
+
+				<CFLOOP from="1" to="#commentsLen#" index="i">
+					<b><a href="userfeed.cfm?access_token=#URL.access_token#&userid=#imgDetails.data.comments.data[#i#].from.id#&user=#imgDetails.data.comments.data[#i#].from.full_name#">#imgDetails.data.comments.data[#i#].from.full_name#</a></b>
+					#imgDetails.data.comments.data[#i#].text#<br />
+				</CFLOOP>
+				<CFIF isDeFined("imgDetails.data.comments.count")>
+					<CFIF #imgDetails.data.comments.count# GT #commentsLen#>
+						<a href="comments.cfm?mediaID=#URL.imgID#&CommentsCount=#imgDetails.data.comments.count#&imgURL=#imgDetails.data.images.low_resolution.url#">See More Comments...</a>
+					</CFIF>
+				</CFIF>
+				<br>
+				<CFIF noLocation EQ "false">
+					<CFIF #IsDefined("imgDetails.data.location.name")#>
+						<i class="fa fa-map-marker"></i> <b>#imgDetails.data.location.name#</b>
+					<CFELSE>
+						<b>Location</b>
+					</CFIF>
+				</CFIF>
 			</div>
-		</div>
-		<div id="imgCol">
-			<img src="#imgDetails.data.images.standard_resolution.url#" class="instaImg">
-		</div>
 
-		<div id="commentsDiv">
-			<CFSET commentsLen = ARRAYLEN(imgDetails.data.comments.data)>
-			<CFIF isDefined("imgDetails.data.caption.from.full_name")>
-				<b><a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.user.id#&user=#imgDetails.data.user.full_name#">#imgDetails.data.caption.from.full_name#</a></b>
-				<!--- search Caption for @ usernames --->
-						<cfset captionArray = #listToArray(imgDetails.data.caption.text, " ")#>
-						<cfset captionArLen = ArrayLen(captionArray)>
-						<!---<CFDUMP var="#captionArray#">--->
-						<CFSET userNameAr = arrayNew(1)>
-						<CFLOOP from="1" To="#captionArLen#" index="x">
-							<CFIF TRIM(LEFT(captionArray[#x#],1)) EQ "@">
-								<CFSET temp = ArrayAppend(userNameAr, #captionArray[#x#]#)>
-							</CFIF>
-						</CFLOOP>
-						<!---<CFDUMP var="#userNameAr#">--->
-						<CFSET newCaptionTxt = "#imgDetails.data.caption.text#">
-						<CFLOOP array="#userNameAr#" index="un">
-
-							<CFSET userSearchURL = "https://api.instagram.com/v1/users/search?q=#un#&count=1&access_token=#cookie.instaAccessCode#">
-							<cfhttp url="#userSearchURL#" method="get" resolveurl="true" result="userSearch"/>
-							<CFSET userDetails = deserializeJSON(#userSearch.fileContent#)>
-							<!---<CFDUMP var="#userDetails#">--->
-							<CFIF isDefined("userDetails.data[1].id")>
-								<CFSET newCaptionTxt = #REPLACE(#newCaptionTxt#, #un#, "<a href='userfeed.cfm?access_token=#URL.access_token#&userid=#userDetails.data[1].id#&user=#userDetails.data[1].full_name#'>" & #un# & "</a>")#>
-							</CFIF>
-						</CFLOOP>
-				<!---End Search for usernames --->
-
-				<!--- search Caption for Hashtags --->
-						<cfset hashtagArray = #listToArray(newCaptionTxt, " ")#>
-						<cfset hashtagArLen = ArrayLen(hashtagArray)>
-						<!---<CFDUMP var="#hashtagArray#">--->
-						<CFSET tagsAr = arrayNew(1)>
-						<CFLOOP from="1" To="#hashtagArLen#" index="x">
-							<CFIF TRIM(LEFT(hashtagArray[#x#],1)) EQ "##">
-								<CFSET temp = ArrayAppend(tagsAr, #hashtagArray[#x#]#)>
-							</CFIF>
-						</CFLOOP>
-						<!---<CFDUMP var="#tagsAr#">--->
-						<CFLOOP array="#tagsAr#" index="tag">
-							<CFSET newCaptionTxt = #REPLACE(#newCaptionTxt#, #tag#, "<a href='hashtag.cfm?access_token=#URL.access_token#&hashtag=#tag#'>" & #tag# & "</a>")#>
-						</CFLOOP>
-				<!---End Search for hashtags --->
-				#newCaptionTxt#<br>
-			</CFIF>
-			<CFLOOP from="1" to="#commentsLen#" index="i">
-				<b><a href="userfeed.cfm?access_token=#URL.access_token#&userid=#imgDetails.data.comments.data[#i#].from.id#&user=#imgDetails.data.comments.data[#i#].from.full_name#">#imgDetails.data.comments.data[#i#].from.full_name#</a></b>
-				#imgDetails.data.comments.data[#i#].text#<br />
-			</CFLOOP>
-			<CFIF isDeFined("imgDetails.data.comments.count")>
-				<CFIF #imgDetails.data.comments.count# GT #commentsLen#>
-					<a href="comments.cfm?mediaID=#URL.imgID#&CommentsCount=#imgDetails.data.comments.count#&imgURL=#imgDetails.data.images.low_resolution.url#">See More Comments...</a>
-				</CFIF>
-	  	</CFIF>
-			<br>
-			<CFIF noLocation EQ "false">
-				<CFIF #IsDefined("imgDetails.data.location.name")#>
-					<i class="fa fa-map-marker"></i> <b>#imgDetails.data.location.name#</b>
-				<CFELSE>
-					<b>Location</b>
-				</CFIF>
-			</CFIF>
-		</div>
-		<div id="map-canvas"></div>
+			<div id="map-canvas"></div>
+		</div><!-- End Comments Div -->
 
 
-	</div>
+
+
+
+	</div><!-- End Container fluid -->
 
 	<CFDUMP var="#imgDetails#">
 </CFOUTPUT>

@@ -23,7 +23,7 @@
       border: 1px solid black;
     }
     #origCommentsBox {
-      width: 50%;
+      width: 60%;
       float: left;
       border: 0px dashed blue;
     }
@@ -56,18 +56,42 @@
       padding-left: 7px;
       margin-Left: 1px;
     }
+    #topSection {
+      width: 100%;
+      border: 0px dashed red;
+    }
   </style>
 </head>
 <body>
 
 <CFOUTPUT>
   <!---<CFDUMP var="#commentsDetails#">--->
-
+<div class="well">
+<div id="topSection">
   <img src="#URL.imgURL#" id="origImg">
   <div id="origCommentsBox">
     <h1><i class="fa fa-comment"></i> Comments Count: #URL.commentsCount#</h1>
   </div>
+  <div style="clear:both;"></div>
+</div>
 
+  <CFSET CommentsArrLen = ARRAYLEN(#CommentsDetails.Data#)>
+  <CFLOOP from="1" to="#CommentsArrLen#" index="i">
+      <div class="media" style="margin-left: 20px;">
+        <div class="media-left">
+          <a href="##">
+            <img class="media-object" src="#CommentsDetails.data[#i#].from.profile_picture#" style="width:65px;">
+          </a>
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading">#commentsDetails.data[#i#].from.full_name# <small>(#commentsDetails.data[#i#].from.username#)</small></h4>
+            #commentsDetails.data[#i#].text#
+        </div>
+      </div>
+  </CFLOOP>
+
+</div><!---End Well--->
+<!---
   <div id="CommentsBox">
 
     <CFSET CommentsArrLen = ARRAYLEN(#CommentsDetails.Data#)>
@@ -88,7 +112,7 @@
     <div style="clear:both;">&nbsp;</div>
 
   </div>
-
+--->
 </CFOUTPUT>
 
 
