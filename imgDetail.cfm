@@ -127,18 +127,22 @@
 <CFOUTPUT>
 	<!---
 	Status Code: #cfhttp.statusCode#<br />
-
 	--->
 	<div class="instaImgDiv">
 		<div class="nameBlock">
-			<h2 style="margin-left:10px;">#imgDetails.data.user.full_name#</h2>
+			<h2 style="margin-left:10px;">#imgDetails.data.user.full_name#
+				<small>
+					<a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.user.id#&user=#imgDetails.data.user.full_name#">(#imgDetails.data.user.username#)</a>
+				</small>
+			</h2>
 		</div>
 		<div id="profileCol">
 		 	<img src="#imgDetails.data.user.profile_picture#" class="profilePic">
 		 	<div class="likesAndCommentBlock">
-				<i class="fa fa-heart" style="color: red;"></i>  #imgDetails.data.likes.count# | <i class="fa fa-comment"></i> #imgDetails.data.comments.count#
+				<i class="fa fa-heart" style="color: red;"></i> #imgDetails.data.likes.count# | <i class="fa fa-comment"></i> #imgDetails.data.comments.count#
 				<br>&nbsp;<br>
 				<b>Filter:</b> #imgDetails.data.filter#<br>
+				<b>Posted:</b><br />#dateTimeFormat(dateAdd("s", #imgDetails.data.created_time#, DateConvert("utc2Local", createDateTime(1970, 1, 1, 0,0,0))), 'short')#<br />
 				<b>Likes:</b><br>
 				<cfset likesArrayLen = #ARRAYLEN(imgDetails.data.likes.data)#>
 				<cfloop from="1" to="#likesArrayLen#" index="x">
@@ -165,7 +169,7 @@
 		<div id="commentsDiv">
 			<CFSET commentsLen = ARRAYLEN(imgDetails.data.comments.data)>
 			<CFIF isDefined("imgDetails.data.caption.from.full_name")>
-				<b>#imgDetails.data.caption.from.full_name#</b>
+				<b><a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.user.id#&user=#imgDetails.data.user.full_name#">#imgDetails.data.caption.from.full_name#</a></b>
 				<!--- search Caption for @ usernames --->
 						<cfset captionArray = #listToArray(imgDetails.data.caption.text, " ")#>
 						<cfset captionArLen = ArrayLen(captionArray)>
@@ -213,7 +217,7 @@
 			</CFLOOP>
 			<CFIF isDeFined("imgDetails.data.comments.count")>
 				<CFIF #imgDetails.data.comments.count# GT #commentsLen#>
-					<a href="comments.cfm">See More Comments...</a>
+					<a href="comments.cfm?mediaID=#URL.imgID#&CommentsCount=#imgDetails.data.comments.count#&imgURL=#imgDetails.data.images.low_resolution.url#">See More Comments...</a>
 				</CFIF>
 	  	</CFIF>
 			<br>
@@ -230,7 +234,7 @@
 
 	</div>
 
-	<!---<CFDUMP var="#imgDetails#">--->
+	<CFDUMP var="#imgDetails#">
 </CFOUTPUT>
 
 </body>

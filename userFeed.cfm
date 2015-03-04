@@ -18,7 +18,7 @@
 <cfhttp url="#feedURL#" method="get" resolveurl="true" />
 <HTML>
 <head>
-	<title>Image Feed - Beta 1.1 Built: 3.3.15 </title>
+	<title>Image Feed</title>
 	<style>
 		.profilePic {
 			width: 125px;
@@ -27,7 +27,7 @@
 			border: 1px solid black;
 			float: left;
 		}
-		.profileLinkDiv {
+		.profileBioDiv {
 			float: left;
 			margin-left: 20px;
 			border: 0px solid red;
@@ -130,10 +130,9 @@
 				<span class="label label-info">Following: #currentUserInfo.data.counts.follows#</span>
 				<span class="label label-primary">Followers: #currentUserInfo.data.counts.followed_by#</span>
 		  </div>
-			<div class="profileLinkDiv">
-				<a href="userProfile.cfm?accessCode=#currentUserInfo.data.id#" class="btn btn-default"><i class="fa fa-user"></i> View Profile</a>
+			<div class="profileBioDiv">
+				#currentUserInfo.data.bio#
 			</div>
-
   </div>
 
 	<div style="clear:both;"></div>

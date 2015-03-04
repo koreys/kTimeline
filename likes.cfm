@@ -12,7 +12,6 @@
 <html>
 <head>
   <title>Image Likes</title>
-</head>
 
 <style>
   #origImg {
@@ -59,7 +58,7 @@
     margin-Left: 1px;
   }
 </style>
-
+</head>
 
 <body>
 

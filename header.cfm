@@ -10,7 +10,7 @@
 <link href="/css/animate.min.css" rel="stylesheet">
 -->
 <!-- Check for Authentication cookie -->
-<CFIF !isDefined("cookie.instaAccessCode")><!--If the cookie isnt defined send user to Auth.cfm -->
+<CFIF !isDefined("cookie.instaAccessCode")><!--- If the cookie isnt defined send user to Auth.cfm --->
 		<CFSET myFeedHref = "timeline.cfm">
 <CFELSE>
 		<CFSET myFeedHref = "userfeed.cfm?access_token=#cookie.instaAccessCode#&user=#cookie.instaFullName#">
@@ -20,13 +20,14 @@
 <div class="navbar navbar-default" >
 	<div class="container-fluid">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="##">kTimeline</a>
+			<a class="navbar-brand" href="##"><i class="fa fa-instagram"></i> kTimeline - Beta Built: 3.3.15c</li></a>
 		</div>
 
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		  <ul class="nav navbar-nav">
-			<li class="active"><a href="#myFeedHref#">My Image Feed</a></li>
-			<li><a href="logout.cfm">Log Out</a></li>
+			<li class="active"><a href="#myFeedHref#"><i class="fa fa-home"></i> Image Feed</a></li>
+			<li><a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&user=#cookie.instaFullName#&userid=#cookie.instaMyID#"><i class="fa fa-user"></i> My Images</a></li>
+			<li><a href="logout.cfm"><i class="fa fa-sign-out"></i> Log Out</a></li>
 			<!---
 			<li class="dropdown">
 			  <a href="##" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
