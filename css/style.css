@@ -1,8 +1,7 @@
 
   .profilePic {
-    width: 125px;
+    width: 135px;
     margin-bottom: 15px;
-    border: 1px solid black;
     float: left;
   }
   .profileBioDiv {
@@ -19,6 +18,7 @@
     width: 95%;
   }
   .instaImgDiv {
+    position: relative;
     width: 320px;
     float: left;
     padding-right: 10px;
@@ -26,13 +26,14 @@
     margin-bottom: 15px;
   }
   .moreDiv {
-    width: 306px;
-    height: 306px;
+    width: 310px;
+    height: 310px;
     padding-top: 45px;
     margin-top: 20px;
-    border: 2px solid black;
+    border: 1px solid #ccc;
     font-size: 50px;
     color: #CCC;
+    border-radius: 4px;
   }
   .nameBlock {
     display: inline;
@@ -45,9 +46,6 @@
     float: right;
     text-align: right;
   }
-  .instaImg {
-    border: 1px solid black;
-  }
   #userTitle {
     margin-left: 20px;
     margin-top: 0px;
@@ -59,4 +57,45 @@
     border: 0px solid green;
     float: left;
     height: 125px;
+  }
+  .instaVideo {
+    position: absolute;
+    top:  150px;
+    left: 120px;
+    color: #CCC;
+  }
+  #origImg {
+    width: 30%;
+    float: left;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    border: 1px solid black;
+  }
+  #origLikesBox {
+    width: 65%;
+    float: left;
+    border: 0px dashed blue;
+  }
+
+  .likersBox {
+    width: 33%;
+    min-width: 255px;
+    height: 60px;
+    float: left;
+    border: 0px dashed red;
+    margin-left: 2px;
+    margin-bottom: 11px;
+    border-bottom: 1px solid #CCC;
+  }
+  .likeProfilePic {
+    width: 50px;
+    float: left;
+  }
+  .likeProfileInfo {
+    width: 76%;
+    height: 99px;
+    float: left;
+    border: 0px dashed green;
+    padding-left: 7px;
+    margin-Left: 1px;
   }

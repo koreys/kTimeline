@@ -1,15 +1,50 @@
 <CFPARAM Name="URL.imgID" default="">
 <CFPARAM Name="noLocation" default="false">
+<CFPARAM Name="URL.likeIt" default="false">
+<CFPARAM Name="URL.unLikeIt" default="false">
+<CFPARAM Name="userHasLiked" default = "">
+
 
 <CFIF URL.imgID EQ "">
 	<H4>Error No URL.ImgID provided</h4>
 	<cfabort>
 <CFELSE>
-	<CFSET imgURL = "https://api.instagram.com/v1/media/#URL.imgID#?access_token=#URL.access_token#">
+	<CFSET imgURL = "https://api.instagram.com/v1/media/#URL.imgID#?access_token=#cookie.instaAccessCode#">
 </CFIF>
 
+<!---Make call and get all img details --->
 <cfhttp url="#imgURL#" method="get" resolveurl="true" />
 <CFSET imgDetails = deserializeJSON(#cfhttp.fileContent#)>
+
+<CFIF isDefined("cookie.instaImgUser")>
+	<cfcookie name="instaImgUser" expires="now">
+	<cfcookie name="instaImgCaption" expires="now">
+</CFIF>
+
+<CFCOOKIE name="instaImgUser" value="#imgDetails.data.user.full_name#">
+<CFCOOKIE name="instaImgCaption" value="#imgDetails.data.caption.text#">
+
+<!--- Check if user has requested to like photo --->
+<CFIF URL.likeIt EQ "true">
+		<CFIF imgDetails.data.user_has_liked NEQ "true">
+				<cfhttp url="https://api.instagram.com/v1/media/#URL.imgID#/likes" method="post" resolveurl="true" result="likeResult">
+					<cfhttpparam type="formField" name="access_token" value="#cookie.instaAccessCode#" />
+				</cfhttp>
+				<CFSET userHasLiked = "true">
+	  </CFIF>
+</CFIF>
+
+<!--- Check if user has requested to unlike photo --->
+<CFIF URL.unLikeIt EQ "true">
+	<CFIF imgDetails.data.user_has_liked EQ "true">
+			<cfhttp url="https://api.instagram.com/v1/media/#URL.imgID#/likes?access_token=#cookie.instaAccessCode#" method="delete" resolveurl="true" result="dellikeResult" />
+			<CFSET userHasLiked = "false">
+	</CFIF>
+</CFIF>
+
+
+
+
 
 <CFIF !IsDefined("imgDetails.data.location.latitude")>
 	<CFSET noLocation = "true">
@@ -18,9 +53,25 @@
 <HTML>
 <head>
 	<title>Image Detail</title>
+
+	<CFIF imgDetails.data.type EQ "video">
+			<!--- js and css for video player --->
+			<link href="//vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
+		  <script src="//vjs.zencdn.net/4.12/video.js"></script>
+  </CFIF>
+
 	<CFIF noLocation EQ "false">
 		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAP5fLA7LpG7TNgnFbCtbTjxK8icRWHoTs"></script>
+
 		<script type="text/javascript">
+			<CFOUTPUT>
+		  $( document ).ready(function() {
+					$( "##likeBtn" ).click(function() {
+						console.log( "Handler for .click() called. Posting to like with Access Token." );
+					});
+		  });
+			</CFOUTPUT>
+
 
 		  function initialize() {
 
@@ -55,17 +106,18 @@
 		 google.maps.event.addDomListener(window, 'load', initialize);
 
 		</script>
+
     </CFIF>
 
 	<style>
 
 		.container {
-			max-width: 720px;
+			max-width: 680px;
 		}
 
 
 		#map-canvas {
-			width: 680px;
+			width: 640px;
 			height: 520px;
 		}
 		#map-canvas img {
@@ -78,7 +130,17 @@
 <CFOUTPUT>
 	<!---
 	Status Code: #cfhttp.statusCode#<br />
+
+	<CFIF isDefined("likeResult.fileContent")>
+		LikeResult: #likeResult.fileContent# <br />
+	</CFIF>
+
+	<CFIF isDefined("dellikeResult.fileContent")>
+		delLikeResult: #dellikeResult.fileContent# <br />
+	</CFIF>
 	--->
+
+
 	<div class="container" style="border:0px dashed grey;">
 			<div class="jumbotron">
 				<img src="#imgDetails.data.user.profile_picture#" class="img-thumbnail" style="float:left;margin-right:20px;">
@@ -98,17 +160,39 @@
 				<div style="clear:both;"></div>
 			</div><!-- End Jumbotron -->
 
+			<CFIF imgDetails.data.type EQ "Video">
+				<video id="insta_video" class="video-js vjs-default-skin center-block vjs-big-play-centered"
+					  controls preload="auto" width="640" height="640"
+					  poster="#imgDetails.data.images.standard_resolution.url#"
+					  data-setup='{"example_option":true}'>
+					 <source src="#imgDetails.data.videos.standard_resolution.url#" type='video/mp4' />
+					 <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+				</video>
+			<CFELSE>
+					<img src="#imgDetails.data.images.standard_resolution.url#" class="center-block img-thumbnail">
+			</CFIF>
 
-			<img src="#imgDetails.data.images.standard_resolution.url#" class="center-block">
-
+			<!--- Begin Likes Well --->
 			<div class="well well-sm" style="margin-top:5px;">
+				<CFIF #userHasLiked# EQ "">
+						<CFIF #imgDetails.data.user_has_liked# EQ "true">
+								<a href="imgDetail.cfm?imgId=#url.imgID#&access_token=#cookie.instaAccessCode#&unLikeIt=true" class="btn btn-default" id="likeBtn"><i class="fa fa-heart" style="color:red;"></i> Liked</a>
+						<CFELSE>
+								<a href="imgDetail.cfm?imgId=#url.imgID#&access_token=#cookie.instaAccessCode#&likeIt=true" class="btn btn-default" id="likeBtn"><i class="fa fa-heart-o"></i> Like</a>
+						</CFIF>
+				<CFELSEIF #userHasLiked# EQ "true">
+						<a href="imgDetail.cfm?imgId=#url.imgID#&access_token=#cookie.instaAccessCode#&unLikeIt=true" class="btn btn-default" id="likeBtn"><i class="fa fa-heart" style="color:red;"></i> Liked</a>
+				<CFELSEIF #userHasLiked# EQ "false">
+						<a href="imgDetail.cfm?imgId=#url.imgID#&access_token=#cookie.instaAccessCode#&likeIt=true" class="btn btn-default" id="likeBtn"><i class="fa fa-heart-o"></i> Like</a>
+				</CFIF>
+
 				<b>Likes:</b>
 				<cfset likesArrayLen = #ARRAYLEN(imgDetails.data.likes.data)#>
 				<cfloop from="1" to="#likesArrayLen#" index="x">
 						<a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.likes.data[#x#].id#&user=#imgDetails.data.likes.data[#x#].full_name#">#imgDetails.data.likes.data[#x#].full_name#</a>,
 				</cfloop>
 				<CFIF  #imgDetails.data.likes.count# GT #likesArrayLen#>
-						<a href="likes.cfm?mediaID=#URL.imgID#&likesCount=#imgDetails.data.likes.count#&imgURL=#imgDetails.data.images.low_resolution.url#"><small><b>...See All Likes</b></small></a>
+						<a href="likes.cfm?mediaID=#URL.imgID#&likesCount=#imgDetails.data.likes.count#&imgURL=#imgDetails.data.images.low_resolution.url#"><span class="pull-right"><small><b>...See All Likes</b></small></span></a>
 				</CFIF>
 
 				<CFIF #ARRAYLEN(imgDetails.data.users_in_photo)# GT 0>
@@ -116,10 +200,10 @@
 						<b>Tagged in Photo:</b><br>
 						<CFSET taggedLen = ARRAYLEN(imgDetails.data.users_in_photo)>
 						<CFLOOP from="1" to="#taggedLen#" index="t">
-								<a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.users_in_photo[#t#].user.id#&user=#imgDetails.data.users_in_photo[#t#].user.full_name#">#imgDetails.data.users_in_photo[#t#].user.full_name#,</a>
+								<a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.users_in_photo[#t#].user.id#&user=#imgDetails.data.users_in_photo[#t#].user.full_name#">#TRIM(imgDetails.data.users_in_photo[#t#].user.full_name)#,</a>
 						</CFLOOP>
 				</CFIF>
-
+				<div class="clear:both;">&nbsp;</div>
 			</div><!-- End Likers Well -->
 
 
@@ -197,7 +281,7 @@
 
 	</div><!-- End Container fluid -->
 
-	<CFDUMP var="#imgDetails#">
+	<!---<CFDUMP var="#imgDetails#">--->
 </CFOUTPUT>
 
 </body>

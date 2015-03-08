@@ -13,17 +13,14 @@
 <head>
   <title>Image Comments</title>
   <style>
-    #origImg {
-      width: 30%;
-      max-width: 305px;
+    .origImg {
+      width: 28%;
       float: left;
-      margin-left: 20px;
       margin-bottom: 20px;
       margin-right: 20px;
-      border: 1px solid black;
     }
-    #origCommentsBox {
-      width: 60%;
+    .origCommentsBox {
+      width: 68%;
       float: left;
       border: 0px dashed blue;
     }
@@ -32,33 +29,8 @@
       float: left;
       margin-left: 0px;
     }
-    .commentBox {
-      width: 98%;
-      min-width: 500px;
-      height: 110px;
-      float: left;
-      border: 0px dashed red;
-      margin-left: 20px;
-      margin-bottom: 5px;
-      border-bottom: 1px solid #CCC;
-    }
-    .profilePic {
-      width: 90px;
-      float: left;
-      border: 1px solid black;
-
-    }
-    .commentTxt {
-      width: 85%;
-      height: 109px;
-      float: left;
-      border: 0px dashed green;
-      padding-left: 7px;
-      margin-Left: 1px;
-    }
-    #topSection {
-      width: 100%;
-      border: 0px dashed red;
+    .container {
+      max-width: 850px;
     }
   </style>
 </head>
@@ -66,18 +38,20 @@
 
 <CFOUTPUT>
   <!---<CFDUMP var="#commentsDetails#">--->
-<div class="well">
-<div id="topSection">
-  <img src="#URL.imgURL#" id="origImg">
-  <div id="origCommentsBox">
-    <h1><i class="fa fa-comment"></i> Comments Count: #URL.commentsCount#</h1>
+<div class="container">
+  <div class="well">
+    <img src="#URL.imgURL#" class="origImg img-thumbnail">
+    <div class="origCommentsBox">
+      <h1>#cookie.instaImgUser#</h1>
+      <h2><i class="fa fa-comment"></i> Comments Count: #URL.commentsCount#</h2>
+      <h5>#cookie.instaImgCaption#</h5>
+    </div>
+    <div style="clear:both;"></div>
   </div>
-  <div style="clear:both;"></div>
-</div>
 
   <CFSET CommentsArrLen = ARRAYLEN(#CommentsDetails.Data#)>
   <CFLOOP from="1" to="#CommentsArrLen#" index="i">
-      <div class="media" style="margin-left: 20px;">
+      <div class="media" style="margin-left: 20px;border-bottom:1px solid ##ccc;">
         <div class="media-left">
           <a href="##">
             <img class="media-object" src="#CommentsDetails.data[#i#].from.profile_picture#" style="width:65px;">
@@ -90,29 +64,8 @@
       </div>
   </CFLOOP>
 
-</div><!---End Well--->
-<!---
-  <div id="CommentsBox">
+</div><!---End container--->
 
-    <CFSET CommentsArrLen = ARRAYLEN(#CommentsDetails.Data#)>
-    <CFLOOP from="1" to="#CommentsArrLen#" index="i">
-      <div class="commentBox">
-
-        <img src="#CommentsDetails.data[#i#].from.profile_picture#" class="profilePic">
-
-        <div class="commentTxt">
-          <a href="userfeed.cfm?userid=#commentsDetails.data[#i#].from.id#&user=#commentsDetails.data[#i#].from.full_name#"><b>#commentsDetails.data[#i#].from.full_name#</b> <small>(#commentsDetails.data[#i#].from.username#)</small></a><br />
-            <small>#dateTimeFormat(dateAdd("s", #commentsDetails.data[#i#].created_time#, DateConvert("utc2Local", createDateTime(1970, 1, 1, 0,0,0))), 'short')#:</small>
-            #commentsDetails.data[#i#].text#
-          <br />
-        </div>
-      </div>
-    </CFLOOP>
-
-    <div style="clear:both;">&nbsp;</div>
-
-  </div>
---->
 </CFOUTPUT>
 
 

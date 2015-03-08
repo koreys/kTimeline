@@ -27,8 +27,14 @@
 	Current feedURL: #feedURL#<br>
 	--->
 
- <CFSET UserFeed = deserializeJSON(#cfhttp.fileContent#)>
- <!---<CFDUMP var="#UserFeed#">--->
+	<CFIF  #cfhttp.statusCode# NEQ '200 OK'>
+			ERROR! <br>
+			#cfhttp.fileContent#
+			<CFABORT>
+	<CFELSE>
+ 			<CFSET UserFeed = deserializeJSON(#cfhttp.fileContent#)>
+	</CFIF>
+ <!---  <CFDUMP var="#UserFeed#"> --->
 
 	<CFIF isDefined("userFeed.meta.error_message")>
 			<CFIF TRIM(userFeed.meta.error_message) EQ TRIM("you cannot view this resource")>
@@ -52,7 +58,7 @@
 	<cfhttp url="#userInfoURL#" method="get" resolveurl="true" result="userInfo"/>
 	<CFSET currentUserInfo = deserializeJSON(#userInfo.fileContent#)>
 
-  <img src="#currentUserInfo.data.profile_picture#" class="profilePic">
+  <img src="#currentUserInfo.data.profile_picture#" class="profilePic img-thumbnail">
 	<div id="profileInfoContainer">
 			<h2 id="userTitle">#currentUserInfo.data.full_name# Image Feed</h2>
 			<br />
@@ -76,8 +82,11 @@
 				<i class="fa fa-heart" style="color: red;"></i>  #userfeed.data[#i#].likes.count# | <i class="fa fa-comment"></i> #userfeed.data[#i#].comments.count#
 			</div>
 			<a href="imgDetail.cfm?imgID=#userfeed.data[#i#].id#&access_token=#cookie.instaAccessCode#">
-		    	<img class="instaImg" src="#userfeed.data[#i#].images.low_resolution.url#">
-		    </a>
+				<img class="img-thumbnail" src="#userfeed.data[#i#].images.low_resolution.url#">
+				<CFIF #userfeed.data[#i#].type# EQ "video">
+					<i class="fa fa-youtube-play fa-4x instaVideo"></i>
+				</CFIF>
+		  </a>
 		</div>
 	</CFLOOP>
 
@@ -85,7 +94,7 @@
 		<div class="moreDiv">
 			<center>
 				<CFIF isDefined("userfeed.pagination.next_max_id")>
-				  <a href="userfeed.cfm?max_id=#userfeed.pagination.next_max_id#&access_token=#cookie.instaAccessCode#&user=#URL.user#&userid=#URL.userid#"><i class="fa fa-play-circle-o fa-3x"></i><br>Next</a>
+				  <a href="userfeed.cfm?max_id=#userfeed.pagination.next_max_id#&access_token=#cookie.instaAccessCode#&user=#URL.user#&userid=#URL.userid#"><i class="fa fa-forward fa-3x"></i><br>Next</a>
 			  </CFIF>
 			</center>
 		</div>

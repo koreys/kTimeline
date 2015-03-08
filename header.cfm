@@ -40,13 +40,13 @@
 
 		  <form class="navbar-form navbar-right" role="search">
 					<div class="form-group">
-						  <input type="text" class="form-control" placeholder="Search Users">
+						  <input type="text" class="form-control" placeholder="Search Users (Soon)">
 					</div>
 					<button type="submit" class="btn btn-default">Submit</button>
 		  </form>
 
 
-			<p class="navbar-text navbar-right">Beta Built: 3.4.15</p>
+			<p class="navbar-text navbar-right">Beta Built: 3.7.15</p>
 
 
 		</div><!-- /.navbar-collapse -->
