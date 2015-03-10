@@ -1876,3 +1876,121 @@ at position 1 in [<!DOCTYPE html>
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source):-1
 	at java.lang.Thread.run(Unknown Source):-1
 "
+"ERROR","ajp-bio-8009-exec-11","03/10/2015","12:22:27","",";No matching property [CODE] found in [string];No matching property [CODE] found in [string]
+	at railo.runtime.reflection.Reflector.getGetter(Reflector.java:955):955
+	at railo.runtime.reflection.Reflector.callGetter(Reflector.java:987):987
+	at railo.runtime.reflection.Reflector.getProperty(Reflector.java:1179):1179
+	at railo.runtime.util.VariableUtilImpl.get(VariableUtilImpl.java:304):304
+	at railo.runtime.PageContextImpl.get(PageContextImpl.java:1393):1393
+	at userfeed_cfm$cf.call(C:\inetpub\kTimelineApp\userFeed.cfm:31):31
+	at railo.runtime.PageContextImpl.doInclude(PageContextImpl.java:909):909
+	at railo.runtime.PageContextImpl.doInclude(PageContextImpl.java:861):861
+	at railo.runtime.listener.ModernAppListener._onRequest(ModernAppListener.java:206):206
+	at railo.runtime.listener.ModernAppListener.onRequest(ModernAppListener.java:84):84
+	at railo.runtime.PageContextImpl.execute(PageContextImpl.java:2212):2212
+	at railo.runtime.PageContextImpl.execute(PageContextImpl.java:2179):2179
+	at railo.runtime.engine.CFMLEngineImpl.serviceCFML(CFMLEngineImpl.java:331):331
+	at railo.loader.servlet.CFMLServlet.service(CFMLServlet.java:29):29
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728):728
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305):305
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210):210
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222):222
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123):123
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472):472
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171):171
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99):99
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118):118
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:407):407
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200):200
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589):589
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310):310
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source):-1
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source):-1
+	at java.lang.Thread.run(Unknown Source):-1
+"
+"ERROR","ajp-bio-8009-exec-11","03/10/2015","12:25:07","",";variable [USERFEED] doesn't exist;variable [USERFEED] doesn't exist
+	at railo.runtime.type.scope.UndefinedImpl.getCollection(UndefinedImpl.java:386):386
+	at userfeed_cfm$cf.call(C:\inetpub\kTimelineApp\userFeed.cfm:53):53
+	at railo.runtime.PageContextImpl.doInclude(PageContextImpl.java:909):909
+	at railo.runtime.PageContextImpl.doInclude(PageContextImpl.java:861):861
+	at railo.runtime.listener.ModernAppListener._onRequest(ModernAppListener.java:206):206
+	at railo.runtime.listener.ModernAppListener.onRequest(ModernAppListener.java:84):84
+	at railo.runtime.PageContextImpl.execute(PageContextImpl.java:2212):2212
+	at railo.runtime.PageContextImpl.execute(PageContextImpl.java:2179):2179
+	at railo.runtime.engine.CFMLEngineImpl.serviceCFML(CFMLEngineImpl.java:331):331
+	at railo.loader.servlet.CFMLServlet.service(CFMLServlet.java:29):29
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728):728
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305):305
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210):210
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222):222
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123):123
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472):472
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171):171
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99):99
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118):118
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:407):407
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200):200
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589):589
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310):310
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source):-1
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source):-1
+	at java.lang.Thread.run(Unknown Source):-1
+"
+"ERROR","ajp-bio-8009-exec-11","03/10/2015","12:43:54","",";key [INSTATHISIMGUSER] doesn't exist;key [INSTATHISIMGUSER] doesn't exist
+	at railo.runtime.type.util.StructSupport.invalidKey(StructSupport.java:48):48
+	at railo.runtime.type.StructImpl.get(StructImpl.java:102):102
+	at likes_cfm$cf.call(C:\inetpub\kTimelineApp\likes.cfm:31):31
+	at railo.runtime.PageContextImpl.doInclude(PageContextImpl.java:909):909
+	at railo.runtime.PageContextImpl.doInclude(PageContextImpl.java:861):861
+	at railo.runtime.listener.ModernAppListener._onRequest(ModernAppListener.java:206):206
+	at railo.runtime.listener.ModernAppListener.onRequest(ModernAppListener.java:84):84
+	at railo.runtime.PageContextImpl.execute(PageContextImpl.java:2212):2212
+	at railo.runtime.PageContextImpl.execute(PageContextImpl.java:2179):2179
+	at railo.runtime.engine.CFMLEngineImpl.serviceCFML(CFMLEngineImpl.java:331):331
+	at railo.loader.servlet.CFMLServlet.service(CFMLServlet.java:29):29
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728):728
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305):305
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210):210
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222):222
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123):123
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472):472
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171):171
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99):99
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118):118
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:407):407
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200):200
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589):589
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310):310
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source):-1
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source):-1
+	at java.lang.Thread.run(Unknown Source):-1
+"
+"ERROR","ajp-bio-8009-exec-11","03/10/2015","12:45:24","",";key [INSTATHISIMGUSER] doesn't exist;key [INSTATHISIMGUSER] doesn't exist
+	at railo.runtime.type.util.StructSupport.invalidKey(StructSupport.java:48):48
+	at railo.runtime.type.StructImpl.get(StructImpl.java:102):102
+	at likes_cfm$cf.call(C:\inetpub\kTimelineApp\likes.cfm:31):31
+	at railo.runtime.PageContextImpl.doInclude(PageContextImpl.java:909):909
+	at railo.runtime.PageContextImpl.doInclude(PageContextImpl.java:861):861
+	at railo.runtime.listener.ModernAppListener._onRequest(ModernAppListener.java:206):206
+	at railo.runtime.listener.ModernAppListener.onRequest(ModernAppListener.java:84):84
+	at railo.runtime.PageContextImpl.execute(PageContextImpl.java:2212):2212
+	at railo.runtime.PageContextImpl.execute(PageContextImpl.java:2179):2179
+	at railo.runtime.engine.CFMLEngineImpl.serviceCFML(CFMLEngineImpl.java:331):331
+	at railo.loader.servlet.CFMLServlet.service(CFMLServlet.java:29):29
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728):728
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305):305
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210):210
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222):222
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123):123
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472):472
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171):171
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99):99
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118):118
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:407):407
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200):200
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589):589
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310):310
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source):-1
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source):-1
+	at java.lang.Thread.run(Unknown Source):-1
+"

@@ -28,9 +28,9 @@
 <div class="well">
   <img src="#URL.imgURL#" id="origImg" class="img-thumbnail">
   <div id="origLikesBox">
-    <h1>#cookie.instaImgUser#</h1>
+    <h1>#cookie.instaThisImgUser#</h1>
     <h2><i class="fa fa-heart" style="color:red;"></i> Likes Count: #URL.likesCount#</h2>
-    <h5>#cookie.instaImgCaption#</h5>
+    <h5>#cookie.instaThisImgCaption#</h5>
   </div>
   <div style="clear:both;">&nbsp;</div>
 </div>

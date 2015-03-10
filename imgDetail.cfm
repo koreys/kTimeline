@@ -16,13 +16,13 @@
 <cfhttp url="#imgURL#" method="get" resolveurl="true" />
 <CFSET imgDetails = deserializeJSON(#cfhttp.fileContent#)>
 
-<CFIF isDefined("cookie.instaImgUser")>
-	<cfcookie name="instaImgUser" expires="now">
-	<cfcookie name="instaImgCaption" expires="now">
+<CFIF isDefined("cookie.instaThisImgUser")>
+	<cfcookie name="instaImgThisUser" expires="now">
+	<cfcookie name="instaImgThisCaption" expires="now">
 </CFIF>
 
-<CFCOOKIE name="instaImgUser" value="#imgDetails.data.user.full_name#">
-<CFCOOKIE name="instaImgCaption" value="#imgDetails.data.caption.text#">
+<CFCOOKIE name="instaThisImgUser" value="#imgDetails.data.user.full_name#">
+<CFCOOKIE name="instaThisImgCaption" value="#imgDetails.data.caption.text#">
 
 <!--- Check if user has requested to like photo --->
 <CFIF URL.likeIt EQ "true">
@@ -59,18 +59,39 @@
 			<link href="//vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
 		  <script src="//vjs.zencdn.net/4.12/video.js"></script>
   </CFIF>
+	<script type="text/javascript">
+		<CFOUTPUT>
+
+		$( document ).ready(function() {
+
+
+				$( "##likeBtnAjax" ).click(function() {
+					console.log( "Handler for .click() called. Posting to like with Access Token." );
+
+							$.ajax({
+							  type: "POST",
+							  url: "https://api.instagram.com/v1/media/#URL.imgID#/likes",
+							  data: { "access_token": "#cookie.instaAccessCode#" },
+							  dataType: JSON
+							})
+							.done(function(msg) {
+								console.log("Resonce:" + msg);
+							});
+
+						$("##likeBtnAjax").html('<i id="likeBtnHeart" class="fa fa-heart"></i> Liked');
+
+				});
+
+
+		});
+
+		</CFOUTPUT>
+	</script>
 
 	<CFIF noLocation EQ "false">
 		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAP5fLA7LpG7TNgnFbCtbTjxK8icRWHoTs"></script>
 
 		<script type="text/javascript">
-			<CFOUTPUT>
-		  $( document ).ready(function() {
-					$( "##likeBtn" ).click(function() {
-						console.log( "Handler for .click() called. Posting to like with Access Token." );
-					});
-		  });
-			</CFOUTPUT>
 
 
 		  function initialize() {
@@ -156,6 +177,8 @@
 				<b>Filter:</b> #imgDetails.data.filter#
 				<br />
 				<b>Posted:</b> #dateTimeFormat(dateAdd("s", #imgDetails.data.created_time#, DateConvert("utc2Local", createDateTime(1970, 1, 1, 0,0,0))), 'short')#
+				<br />
+				<div class="btn btn-default" id="likeBtnAjax"><i class="fa fa-heart-o"></i> Like</div>
 
 				<div style="clear:both;"></div>
 			</div><!-- End Jumbotron -->
@@ -189,7 +212,7 @@
 				<b>Likes:</b>
 				<cfset likesArrayLen = #ARRAYLEN(imgDetails.data.likes.data)#>
 				<cfloop from="1" to="#likesArrayLen#" index="x">
-						<a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.likes.data[#x#].id#&user=#imgDetails.data.likes.data[#x#].full_name#">#imgDetails.data.likes.data[#x#].full_name#</a>,
+						<a href="userfeed.cfm?access_token=#cookie.instaAccessCode#&userid=#imgDetails.data.likes.data[#x#].id#&user=#imgDetails.data.likes.data[#x#].full_name#">#imgDetails.data.likes.data[#x#].username#</a>,
 				</cfloop>
 				<CFIF  #imgDetails.data.likes.count# GT #likesArrayLen#>
 						<a href="likes.cfm?mediaID=#URL.imgID#&likesCount=#imgDetails.data.likes.count#&imgURL=#imgDetails.data.images.low_resolution.url#"><span class="pull-right"><small><b>...See All Likes</b></small></span></a>

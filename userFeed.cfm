@@ -28,9 +28,15 @@
 	--->
 
 	<CFIF  #cfhttp.statusCode# NEQ '200 OK'>
-			ERROR! <br>
-			#cfhttp.fileContent#
-			<CFABORT>
+	  	<CFSET errorFeed = deserializeJSON(#cfhttp.fileContent#)>
+			<CFIF #errorFeed.meta.code# EQ '400'>
+				<Div style="width:400px;" class="well center-block"><center><h2><i class="fa fa-user-secret"></i> Sorry</h2><br /><h4>This user is private</h4></center></div>
+				<CFABORT>
+			<CFELSE>
+				ERROR! <br>
+				<CFDUMP var="#errorFeed#">
+				<CFABORT>
+			</CFIF>
 	<CFELSE>
  			<CFSET UserFeed = deserializeJSON(#cfhttp.fileContent#)>
 	</CFIF>
@@ -76,7 +82,11 @@
 	<CFLOOP From="1" to="#myArrayLen#" index="i">
 		<div class="instaImgDiv">
 			<div class="nameBlock">
-				#userfeed.data[#i#].user.full_name#
+				<CFIF TRIM(userfeed.data[#i#].user.full_name) EQ "">
+					#userfeed.data[#i#].user.username#
+				<CFELSE>
+				  #userfeed.data[#i#].user.full_name#
+				</CFIF>
 			</div>
 			<div class="likesAndCommentBlock">
 				<i class="fa fa-heart" style="color: red;"></i>  #userfeed.data[#i#].likes.count# | <i class="fa fa-comment"></i> #userfeed.data[#i#].comments.count#

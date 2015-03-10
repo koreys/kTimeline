@@ -42,9 +42,9 @@
   <div class="well">
     <img src="#URL.imgURL#" class="origImg img-thumbnail">
     <div class="origCommentsBox">
-      <h1>#cookie.instaImgUser#</h1>
+      <h1>#cookie.instaThisImgUser#</h1>
       <h2><i class="fa fa-comment"></i> Comments Count: #URL.commentsCount#</h2>
-      <h5>#cookie.instaImgCaption#</h5>
+      <h5>#cookie.instaThisImgCaption#</h5>
     </div>
     <div style="clear:both;"></div>
   </div>
