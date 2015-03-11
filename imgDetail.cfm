@@ -59,24 +59,41 @@
 			<link href="//vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
 		  <script src="//vjs.zencdn.net/4.12/video.js"></script>
   </CFIF>
+
+	<!--
 	<script type="text/javascript">
 		<CFOUTPUT>
 
 		$( document ).ready(function() {
 
+				console.log("Checking to see if photo is liked...");
+				$.ajax({
+					type: "GET",
+					datatype: "jsonp",
+					url: "https://api.instagram.com/v1/media/#URL.imgID#?access_token=#cookie.instaAccessCode#&callback=",
+					success: function(data) {
+						console.log("Success function fired. Data is: " + data)
+						}
+				});
+
 
 				$( "##likeBtnAjax" ).click(function() {
-					console.log( "Handler for .click() called. Posting to like with Access Token." );
+					console.log( "Handler for .click() called." );
 
 							$.ajax({
 							  type: "POST",
 							  url: "https://api.instagram.com/v1/media/#URL.imgID#/likes",
 							  data: { "access_token": "#cookie.instaAccessCode#" },
-							  dataType: JSON
+								dataType: 'json',
+								/*
+								success: function(data) {
+									console.log("The success function got called!! Here is data:" + data)
+								}
+								*/
+
+
 							})
-							.done(function(msg) {
-								console.log("Resonce:" + msg);
-							});
+
 
 						$("##likeBtnAjax").html('<i id="likeBtnHeart" class="fa fa-heart"></i> Liked');
 
@@ -87,6 +104,7 @@
 
 		</CFOUTPUT>
 	</script>
+  -->
 
 	<CFIF noLocation EQ "false">
 		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAP5fLA7LpG7TNgnFbCtbTjxK8icRWHoTs"></script>
@@ -177,8 +195,10 @@
 				<b>Filter:</b> #imgDetails.data.filter#
 				<br />
 				<b>Posted:</b> #dateTimeFormat(dateAdd("s", #imgDetails.data.created_time#, DateConvert("utc2Local", createDateTime(1970, 1, 1, 0,0,0))), 'short')#
+				<!---
 				<br />
 				<div class="btn btn-default" id="likeBtnAjax"><i class="fa fa-heart-o"></i> Like</div>
+				--->
 
 				<div style="clear:both;"></div>
 			</div><!-- End Jumbotron -->
