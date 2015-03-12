@@ -16,36 +16,15 @@
 <cfhttp url="#imgURL#" method="get" resolveurl="true" />
 <CFSET imgDetails = deserializeJSON(#cfhttp.fileContent#)>
 
+<!--- Housecleaning delete some cookie and give them new values--->
 <CFIF isDefined("cookie.instaThisImgUser")>
 	<cfcookie name="instaImgThisUser" expires="now">
 	<cfcookie name="instaImgThisCaption" expires="now">
 </CFIF>
-
 <CFCOOKIE name="instaThisImgUser" value="#imgDetails.data.user.full_name#">
 <CFCOOKIE name="instaThisImgCaption" value="#imgDetails.data.caption.text#">
 
-<!--- Check if user has requested to like photo --->
-<CFIF URL.likeIt EQ "true">
-		<CFIF imgDetails.data.user_has_liked NEQ "true">
-				<cfhttp url="https://api.instagram.com/v1/media/#URL.imgID#/likes" method="post" resolveurl="true" result="likeResult">
-					<cfhttpparam type="formField" name="access_token" value="#cookie.instaAccessCode#" />
-				</cfhttp>
-				<CFSET userHasLiked = "true">
-	  </CFIF>
-</CFIF>
-
-<!--- Check if user has requested to unlike photo --->
-<CFIF URL.unLikeIt EQ "true">
-	<CFIF imgDetails.data.user_has_liked EQ "true">
-			<cfhttp url="https://api.instagram.com/v1/media/#URL.imgID#/likes?access_token=#cookie.instaAccessCode#" method="delete" resolveurl="true" result="dellikeResult" />
-			<CFSET userHasLiked = "false">
-	</CFIF>
-</CFIF>
-
-
-
-
-
+<!--- Check if photo has location data --->
 <CFIF !IsDefined("imgDetails.data.location.latitude")>
 	<CFSET noLocation = "true">
 </CFIF>
@@ -54,57 +33,40 @@
 <head>
 	<title>Image Detail</title>
 
+<!--- Only load video scripts if we need to --->
 	<CFIF imgDetails.data.type EQ "video">
 			<!--- js and css for video player --->
 			<link href="//vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
 		  <script src="//vjs.zencdn.net/4.12/video.js"></script>
   </CFIF>
 
-	<!--
 	<script type="text/javascript">
 		<CFOUTPUT>
 
 		$( document ).ready(function() {
+					$( ".likeBtn" ).click(function() {
 
-				console.log("Checking to see if photo is liked...");
-				$.ajax({
-					type: "GET",
-					datatype: "jsonp",
-					url: "https://api.instagram.com/v1/media/#URL.imgID#?access_token=#cookie.instaAccessCode#&callback=",
-					success: function(data) {
-						console.log("Success function fired. Data is: " + data)
-						}
-				});
+								$.ajax({
+								  url: "likeAction.cfm?imgID=#URL.imgID#",
+										success: function(data) {
+												console.log("The success function got called!! Here is data retuned:" + data.trim())
+												if (data.trim() == 'ImgLiked'){
+													console.log("Image was liked, update like button to show red heart.");
+													$(".likeBtn").html('<i id="likeBtnHeart" class="fa fa-heart" style="color:red;"></i> Liked');
+												} else if(data.trim() == 'ImgLikeRemoved') {
+													console.log("Like removed from image, update like button to show outlined heart.");
+													$(".likeBtn").html('<i id="likeBtnHeart" class="fa fa-heart-o"></i> Liked');
+												} else {
+													console.log("Error! Returned data was: " + data.trim());
+												}
+										}
 
-
-				$( "##likeBtnAjax" ).click(function() {
-					console.log( "Handler for .click() called." );
-
-							$.ajax({
-							  type: "POST",
-							  url: "https://api.instagram.com/v1/media/#URL.imgID#/likes",
-							  data: { "access_token": "#cookie.instaAccessCode#" },
-								dataType: 'json',
-								/*
-								success: function(data) {
-									console.log("The success function got called!! Here is data:" + data)
-								}
-								*/
-
-
-							})
-
-
-						$("##likeBtnAjax").html('<i id="likeBtnHeart" class="fa fa-heart"></i> Liked');
-
-				});
-
-
+								})
+					});
 		});
 
 		</CFOUTPUT>
 	</script>
-  -->
 
 	<CFIF noLocation EQ "false">
 		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAP5fLA7LpG7TNgnFbCtbTjxK8icRWHoTs"></script>
@@ -195,10 +157,14 @@
 				<b>Filter:</b> #imgDetails.data.filter#
 				<br />
 				<b>Posted:</b> #dateTimeFormat(dateAdd("s", #imgDetails.data.created_time#, DateConvert("utc2Local", createDateTime(1970, 1, 1, 0,0,0))), 'short')#
-				<!---
+
 				<br />
-				<div class="btn btn-default" id="likeBtnAjax"><i class="fa fa-heart-o"></i> Like</div>
-				--->
+				<CFIF #imgDetails.data.user_has_liked# EQ "true">
+						<a href="##" class="btn btn-default likeBtn" ><i class="fa fa-heart" style="color:red;"></i> Liked</a>
+				<CFELSE>
+						<a href="##" class="btn btn-default likeBtn"><i class="fa fa-heart-o"></i> Like</a>
+				</CFIF>
+
 
 				<div style="clear:both;"></div>
 			</div><!-- End Jumbotron -->
@@ -217,16 +183,11 @@
 
 			<!--- Begin Likes Well --->
 			<div class="well well-sm" style="margin-top:5px;">
-				<CFIF #userHasLiked# EQ "">
-						<CFIF #imgDetails.data.user_has_liked# EQ "true">
-								<a href="imgDetail.cfm?imgId=#url.imgID#&access_token=#cookie.instaAccessCode#&unLikeIt=true" class="btn btn-default" id="likeBtn"><i class="fa fa-heart" style="color:red;"></i> Liked</a>
-						<CFELSE>
-								<a href="imgDetail.cfm?imgId=#url.imgID#&access_token=#cookie.instaAccessCode#&likeIt=true" class="btn btn-default" id="likeBtn"><i class="fa fa-heart-o"></i> Like</a>
-						</CFIF>
-				<CFELSEIF #userHasLiked# EQ "true">
-						<a href="imgDetail.cfm?imgId=#url.imgID#&access_token=#cookie.instaAccessCode#&unLikeIt=true" class="btn btn-default" id="likeBtn"><i class="fa fa-heart" style="color:red;"></i> Liked</a>
-				<CFELSEIF #userHasLiked# EQ "false">
-						<a href="imgDetail.cfm?imgId=#url.imgID#&access_token=#cookie.instaAccessCode#&likeIt=true" class="btn btn-default" id="likeBtn"><i class="fa fa-heart-o"></i> Like</a>
+
+				<CFIF #imgDetails.data.user_has_liked# EQ "true">
+						<a href="##" class="btn btn-default likeBtn" ><i class="fa fa-heart" style="color:red;"></i> Liked</a>
+				<CFELSE>
+						<a href="##" class="btn btn-default likeBtn" ><i class="fa fa-heart-o"></i> Like</a>
 				</CFIF>
 
 				<b>Likes:</b>

@@ -40,8 +40,7 @@
 
 
 
-   <CFIF #TRIM(Left(cgi.SCRIPT_NAME, 12))# EQ '/priceupdate'>
-		<cfinclude template="">
+   <CFIF #TRIM(Left(cgi.SCRIPT_NAME, 11))# EQ '/likeAction'>
    <CFELSE>
    		<CFINCLUDE template="header.cfm">
    </CFIF>
