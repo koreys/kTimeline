@@ -2368,3 +2368,90 @@ at position 1 in [<!DOCTYPE html>
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source):-1
 	at java.lang.Thread.run(Unknown Source):-1
 "
+"ERROR","ajp-bio-8009-exec-5","03/12/2015","15:06:08","",";invalid assignment left-hand side (railo.transformer.bytecode.op.OpDouble);invalid assignment left-hand side (railo.transformer.bytecode.op.OpDouble)
+	at railo.transformer.cfml.expression.AbstrCFMLExprTransformer.assignOp(AbstrCFMLExprTransformer.java:333):333
+	at railo.transformer.cfml.expression.CFMLExprTransformer.transform(CFMLExprTransformer.java:27):27
+	at railo.transformer.cfml.tag.CFMLTransformer.attributeValue(CFMLTransformer.java:1078):1078
+	at railo.transformer.cfml.tag.CFMLTransformer.attrNoName(CFMLTransformer.java:917):917
+	at railo.transformer.cfml.tag.CFMLTransformer.attributes(CFMLTransformer.java:881):881
+	at railo.transformer.cfml.tag.CFMLTransformer.tag(CFMLTransformer.java:542):542
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:313):313
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:321):321
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:321):321
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:321):321
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:321):321
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:321):321
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:321):321
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:321):321
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:321):321
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:321):321
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:321):321
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:321):321
+	at railo.transformer.cfml.tag.CFMLTransformer.tag(CFMLTransformer.java:633):633
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:313):313
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:321):321
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:321):321
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:321):321
+	at railo.transformer.cfml.tag.CFMLTransformer.body(CFMLTransformer.java:321):321
+	at railo.transformer.cfml.tag.CFMLTransformer.transform(CFMLTransformer.java:253):253
+	at railo.transformer.cfml.tag.CFMLTransformer.transform(CFMLTransformer.java:124):124
+	at railo.runtime.compiler.CFMLCompilerImpl.compile(CFMLCompilerImpl.java:55):55
+	at railo.runtime.PageSourceImpl._compile(PageSourceImpl.java:309):309
+	at railo.runtime.PageSourceImpl.compile(PageSourceImpl.java:283):283
+	at railo.runtime.PageSourceImpl.loadPhysical(PageSourceImpl.java:227):227
+	at railo.runtime.PageSourceImpl.loadPage(PageSourceImpl.java:166):166
+	at railo.runtime.PageSourceImpl.loadPage(PageSourceImpl.java:867):867
+	at railo.runtime.PageContextImpl.doInclude(PageContextImpl.java:905):905
+	at railo.runtime.PageContextImpl.doInclude(PageContextImpl.java:861):861
+	at railo.runtime.listener.ModernAppListener._onRequest(ModernAppListener.java:206):206
+	at railo.runtime.listener.ModernAppListener.onRequest(ModernAppListener.java:84):84
+	at railo.runtime.PageContextImpl.execute(PageContextImpl.java:2212):2212
+	at railo.runtime.PageContextImpl.execute(PageContextImpl.java:2179):2179
+	at railo.runtime.engine.CFMLEngineImpl.serviceCFML(CFMLEngineImpl.java:331):331
+	at railo.loader.servlet.CFMLServlet.service(CFMLServlet.java:29):29
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728):728
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305):305
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210):210
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222):222
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123):123
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472):472
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171):171
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99):99
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118):118
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:407):407
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200):200
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589):589
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310):310
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source):-1
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source):-1
+	at java.lang.Thread.run(Unknown Source):-1
+"
+"ERROR","ajp-bio-8009-exec-5","03/12/2015","15:18:45","",";Can't cast String [] to a boolean;Can't cast String [] to a boolean
+	at railo.runtime.op.Caster.toBooleanValue(Caster.java:313):313
+	at railo.runtime.op.Caster.toBooleanValue(Caster.java:288):288
+	at userfeed_cfm$cf.call(C:\inetpub\kTimelineApp\userFeed.cfm:92):92
+	at railo.runtime.PageContextImpl.doInclude(PageContextImpl.java:909):909
+	at railo.runtime.PageContextImpl.doInclude(PageContextImpl.java:861):861
+	at railo.runtime.listener.ModernAppListener._onRequest(ModernAppListener.java:206):206
+	at railo.runtime.listener.ModernAppListener.onRequest(ModernAppListener.java:84):84
+	at railo.runtime.PageContextImpl.execute(PageContextImpl.java:2212):2212
+	at railo.runtime.PageContextImpl.execute(PageContextImpl.java:2179):2179
+	at railo.runtime.engine.CFMLEngineImpl.serviceCFML(CFMLEngineImpl.java:331):331
+	at railo.loader.servlet.CFMLServlet.service(CFMLServlet.java:29):29
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728):728
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305):305
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210):210
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222):222
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123):123
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:472):472
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171):171
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:99):99
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118):118
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:407):407
+	at org.apache.coyote.ajp.AjpProcessor.process(AjpProcessor.java:200):200
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:589):589
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:310):310
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source):-1
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source):-1
+	at java.lang.Thread.run(Unknown Source):-1
+"

@@ -71,6 +71,11 @@
     margin-right: 20px;
     border: 1px solid black;
   }
+  #followsImg {
+    width: 20%;
+    float: left;
+    margin-right: 20px;
+  }
   #origLikesBox {
     width: 65%;
     float: left;
@@ -87,11 +92,33 @@
     margin-bottom: 11px;
     border-bottom: 1px solid #CCC;
   }
+  .followsBox {
+    width: 33%;
+    min-width: 255px;
+    height: 60px;
+    float: left;
+    border: 0px dashed red;
+    margin-left: 2px;
+    margin-bottom: 11px;
+    border-bottom: 1px solid #CCC;
+  }
   .likeProfilePic {
     width: 50px;
     float: left;
   }
+  .followProfilePic {
+    width: 50px;
+    float: left;
+  }
   .likeProfileInfo {
+    width: 76%;
+    height: 99px;
+    float: left;
+    border: 0px dashed green;
+    padding-left: 7px;
+    margin-Left: 1px;
+  }
+  .followProfileInfo {
     width: 76%;
     height: 99px;
     float: left;

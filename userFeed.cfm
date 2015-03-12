@@ -1,21 +1,64 @@
 <CFPARAM Name="URL.max_id" default="">
 <CFPARAM Name="URL.userid" default="">
 
+
 <CFIF URL.userid EQ "">
-	<CFIF URL.max_id NEQ "">
-		<CFSET feedURL = "https://api.instagram.com/v1/users/self/feed?access_token=#cookie.instaAccessCode#&max_id=#URL.max_id#">
-	<CFELSE>
-		<CFSET feedURL = "https://api.instagram.com/v1/users/self/feed?access_token=#cookie.instaAccessCode#">
-	</CFIF>
+
+		<CFIF URL.max_id NEQ "">
+			<CFSET feedURL = "https://api.instagram.com/v1/users/self/feed?access_token=#cookie.instaAccessCode#&max_id=#URL.max_id#">
+		<CFELSE>
+			<CFSET feedURL = "https://api.instagram.com/v1/users/self/feed?access_token=#cookie.instaAccessCode#">
+		</CFIF>
+
+		<cfhttp url="#feedURL#" method="get" resolveurl="true" />
+
+		<CFIF  #cfhttp.statusCode# NEQ '200 OK'>
+		  	<CFSET errorFeed = deserializeJSON(#cfhttp.fileContent#)>
+				<CFIF #errorFeed.meta.code# EQ '400'>
+					<Div style="width:400px;" class="well center-block"><center><h2><i class="fa fa-user-secret"></i> Sorry</h2><br /><h4>This user is private</h4></center></div>
+					<CFABORT>
+				<CFELSE>
+					ERROR! <br>
+					<CFDUMP var="#errorFeed#">
+					<CFABORT>
+				</CFIF>
+		<CFELSE>
+	 			<CFSET UserFeed = deserializeJSON(#cfhttp.fileContent#)>
+		</CFIF>
+
+		<CFSET myImagesURL = "userfeed.cfm?access_token=#cookie.instaAccessCode#&user=#cookie.instaFullName#&userid=#cookie.instaMyID#">
+		<CFSET followsURL = "follows.cfm">
+		<CFSET followedByURL = "followedBy.cfm">
 <CFELSE>
-	<CFIF URL.max_id NEQ "">
-		<CFSET feedURL = "https://api.instagram.com/v1/users/#URL.userid#/media/recent/?access_token=#cookie.instaAccessCode#&max_id=#URL.max_id#">
-	<CFELSE>
-		<CFSET feedURL = "https://api.instagram.com/v1/users/#URL.userid#/media/recent/?access_token=#cookie.instaAccessCode#">
-	</CFIF>
+
+		<CFIF URL.max_id NEQ "">
+			<CFSET feedURL = "https://api.instagram.com/v1/users/#URL.userid#/media/recent/?access_token=#cookie.instaAccessCode#&max_id=#URL.max_id#">
+		<CFELSE>
+			<CFSET feedURL = "https://api.instagram.com/v1/users/#URL.userid#/media/recent/?access_token=#cookie.instaAccessCode#">
+		</CFIF>
+
+		<cfhttp url="#feedURL#" method="get" resolveurl="true" />
+
+		<CFIF  #cfhttp.statusCode# NEQ '200 OK'>
+		  	<CFSET errorFeed = deserializeJSON(#cfhttp.fileContent#)>
+				<CFIF #errorFeed.meta.code# EQ '400'>
+					<Div style="width:400px;" class="well center-block"><center><h2><i class="fa fa-user-secret"></i> Sorry</h2><br /><h4>This user is private</h4></center></div>
+					<CFABORT>
+				<CFELSE>
+					ERROR! <br>
+					<CFDUMP var="#errorFeed#">
+					<CFABORT>
+				</CFIF>
+		<CFELSE>
+	 			<CFSET UserFeed = deserializeJSON(#cfhttp.fileContent#)>
+		</CFIF>
+
+		<CFSET myImagesURL = "##">
+		<CFSET followsURL = "follows.cfm?userID=#URL.userID#">
+		<CFSET followedByURL = "followedBy.cfm?userID=#URL.userID#">
 </CFIF>
 
-<cfhttp url="#feedURL#" method="get" resolveurl="true" />
+
 <HTML>
 <head>
 	<title>Image Feed</title>
@@ -26,31 +69,8 @@
 	Status Code: #cfhttp.statusCode#<br />
 	Current feedURL: #feedURL#<br>
 	--->
-
-	<CFIF  #cfhttp.statusCode# NEQ '200 OK'>
-	  	<CFSET errorFeed = deserializeJSON(#cfhttp.fileContent#)>
-			<CFIF #errorFeed.meta.code# EQ '400'>
-				<Div style="width:400px;" class="well center-block"><center><h2><i class="fa fa-user-secret"></i> Sorry</h2><br /><h4>This user is private</h4></center></div>
-				<CFABORT>
-			<CFELSE>
-				ERROR! <br>
-				<CFDUMP var="#errorFeed#">
-				<CFABORT>
-			</CFIF>
-	<CFELSE>
- 			<CFSET UserFeed = deserializeJSON(#cfhttp.fileContent#)>
-	</CFIF>
  <!---  <CFDUMP var="#UserFeed#"> --->
 
-	<CFIF isDefined("userFeed.meta.error_message")>
-			<CFIF TRIM(userFeed.meta.error_message) EQ TRIM("you cannot view this resource")>
-				<h3>Sorry the user is private</h3>
-				<CFABORT>
-			<CFELSE>
-				Error: #userFeed.meta.error_message#<br>
-				<CFABORT>
-			</CFIF>
-  </CFIF>
 	<cfset myArrayLen = #arraylen(userfeed.data)#>
 
 	<div class="container-fluid" style="border:0px dashed blue;">
@@ -69,10 +89,17 @@
 			<h2 id="userTitle">#currentUserInfo.data.full_name# Image Feed</h2>
 			<br />
 			<div class="countsDiv">
-				<span class="label label-success">Images: #currentUserInfo.data.counts.media#</span>
-				<span class="label label-info">Following: #currentUserInfo.data.counts.follows#</span>
-				<span class="label label-primary">Followers: #currentUserInfo.data.counts.followed_by#</span>
-		  </div>
+				<CFIF URL.userid EQ "">
+						<a href="#myImagesURL#" class="btn btn-success">Images: #currentUserInfo.data.counts.media#</a>
+						<a href="#followsURL#?count=#currentUserInfo.data.counts.follows#" class="btn btn-info">Following: #currentUserInfo.data.counts.follows#</a>
+						<a href="#followedByURL#?count=#currentUserInfo.data.counts.followed_by#" class="btn btn-primary">Followed By: #currentUserInfo.data.counts.followed_by#</a>
+		  	<CFELSE>
+						<a href="#myImagesURL#" class="btn btn-success">Images: #currentUserInfo.data.counts.media#</a>
+						<a href="#followsURL#&count=#currentUserInfo.data.counts.follows#" class="btn btn-info">Following: #currentUserInfo.data.counts.follows#</a>
+						<a href="#followedByURL#&count=#currentUserInfo.data.counts.followed_by#" class="btn btn-primary">Followed By: #currentUserInfo.data.counts.followed_by#</a>
+				</CFIF>
+
+			</div>
 			<div class="profileBioDiv">
 				#currentUserInfo.data.bio#
 			</div>
