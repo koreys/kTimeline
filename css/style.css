@@ -99,3 +99,8 @@
     padding-left: 7px;
     margin-Left: 1px;
   }
+  .navLogo {
+    width: 100px;
+    position: relative;
+    top: -5px;
+  }

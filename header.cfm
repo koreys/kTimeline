@@ -28,7 +28,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-			<a class="navbar-brand" href="##"><i class="fa fa-instagram"></i> kTimeline</li></a>
+			<a class="navbar-brand" href="##"><img src="img/Logo.png" class="navLogo"></li></a>
 		</div>
 
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
