@@ -22,7 +22,9 @@
 	<cfcookie name="instaImgThisCaption" expires="now">
 </CFIF>
 <CFCOOKIE name="instaThisImgUser" value="#imgDetails.data.user.full_name#">
-<CFCOOKIE name="instaThisImgCaption" value="#imgDetails.data.caption.text#">
+<CFIF isDefined("imgDetails.data.caption.text")>
+	<CFCOOKIE name="instaThisImgCaption" value="#imgDetails.data.caption.text#">
+</CFIF>
 
 <!--- Check if photo has location data --->
 <CFIF !IsDefined("imgDetails.data.location.latitude")>
