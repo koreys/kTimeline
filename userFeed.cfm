@@ -1,62 +1,63 @@
 <CFPARAM Name="URL.max_id" default="">
-<CFPARAM Name="URL.userid" default="">
+<CFPARAM Name="URL.username" default="">
+<CFPARAM Name="URL.userID" default="">
 
+<CFIF URL.username EQ "">
+		<CFIF URL.userID EQ "">
+			<CFSET userID = "#cookie.instaMyID#" >
+		<CFELSE>
+			<CFSET userID = "#URL.userID#">
+		</CFIF>
+<CFELSE>
+		<!--- Use the username to search for the userid --->
+		<CFSET userSearchURL = "https://api.instagram.com/v1/users/search?q=#URL.username#&count=1&access_token=#cookie.instaAccessCode#">
+		<cfhttp url="#userSearchURL#" method="get" resolveurl="true" result="userSearch"/>
+		<!---<CFDUMP var="#userSearch.fileContent#">--->
+		<CFSET userDetails = deserializeJSON(#userSearch.fileContent#)>
+		<!---<CFDUMP var="#userDetails#">--->
+		<CFIF isDefined("userDetails.data[1].id")>
+			<CFSET userID = "#userDetails.data[1].id#" >
+		<CFELSE>
+			<h1>Error!: No userid could be found :-(</h1>
+			<CFABORT>
+		</CFIF>
+</CFIF>
 
-<CFIF URL.userid EQ "">
-
+<CFIF URL.username EQ "" AND URL.userID EQ "">
 		<CFIF URL.max_id NEQ "">
 			<CFSET feedURL = "https://api.instagram.com/v1/users/self/feed?access_token=#cookie.instaAccessCode#&max_id=#URL.max_id#">
 		<CFELSE>
 			<CFSET feedURL = "https://api.instagram.com/v1/users/self/feed?access_token=#cookie.instaAccessCode#">
 		</CFIF>
-
-		<cfhttp url="#feedURL#" method="get" resolveurl="true" />
-
-		<CFIF  #cfhttp.statusCode# NEQ '200 OK'>
-		  	<CFSET errorFeed = deserializeJSON(#cfhttp.fileContent#)>
-				<CFIF #errorFeed.meta.code# EQ '400'>
-					<Div style="width:400px;" class="well center-block"><center><h2><i class="fa fa-user-secret"></i> Sorry</h2><br /><h4>This user is private</h4></center></div>
-					<CFABORT>
-				<CFELSE>
-					ERROR! <br>
-					<CFDUMP var="#errorFeed#">
-					<CFABORT>
-				</CFIF>
-		<CFELSE>
-	 			<CFSET UserFeed = deserializeJSON(#cfhttp.fileContent#)>
-		</CFIF>
-
-		<CFSET myImagesURL = "userfeed.cfm?access_token=#cookie.instaAccessCode#&user=#cookie.instaFullName#&userid=#cookie.instaMyID#">
-		<CFSET followsURL = "follows.cfm">
-		<CFSET followedByURL = "followedBy.cfm">
 <CFELSE>
-
 		<CFIF URL.max_id NEQ "">
-			<CFSET feedURL = "https://api.instagram.com/v1/users/#URL.userid#/media/recent/?access_token=#cookie.instaAccessCode#&max_id=#URL.max_id#">
+			<CFSET feedURL = "https://api.instagram.com/v1/users/#userID#/media/recent/?access_token=#cookie.instaAccessCode#&max_id=#URL.max_id#">
 		<CFELSE>
-			<CFSET feedURL = "https://api.instagram.com/v1/users/#URL.userid#/media/recent/?access_token=#cookie.instaAccessCode#">
+			<CFSET feedURL = "https://api.instagram.com/v1/users/#userID#/media/recent/?access_token=#cookie.instaAccessCode#">
+
 		</CFIF>
-
-		<cfhttp url="#feedURL#" method="get" resolveurl="true" />
-
-		<CFIF  #cfhttp.statusCode# NEQ '200 OK'>
-		  	<CFSET errorFeed = deserializeJSON(#cfhttp.fileContent#)>
-				<CFIF #errorFeed.meta.code# EQ '400'>
-					<Div style="width:400px;" class="well center-block"><center><h2><i class="fa fa-user-secret"></i> Sorry</h2><br /><h4>This user is private</h4></center></div>
-					<CFABORT>
-				<CFELSE>
-					ERROR! <br>
-					<CFDUMP var="#errorFeed#">
-					<CFABORT>
-				</CFIF>
-		<CFELSE>
-	 			<CFSET UserFeed = deserializeJSON(#cfhttp.fileContent#)>
-		</CFIF>
-
-		<CFSET myImagesURL = "##">
-		<CFSET followsURL = "follows.cfm?userID=#URL.userID#">
-		<CFSET followedByURL = "followedBy.cfm?userID=#URL.userID#">
 </CFIF>
+
+<cfhttp url="#feedURL#" method="get" resolveurl="true" />
+
+<CFIF  #cfhttp.statusCode# NEQ '200 OK'>
+		<!---<CFDUMP var="#cfhttp.fileContent#">--->
+		<CFSET errorFeed = deserializeJSON(#cfhttp.fileContent#)>
+		<CFIF #errorFeed.meta.code# EQ '400'>
+			<Div style="width:400px;" class="well center-block"><center><h2><i class="fa fa-user-secret"></i> Sorry</h2><br /><h4>This user is private</h4></center></div>
+			<CFABORT>
+		<CFELSE>
+			ERROR! <br>
+			<CFDUMP var="#errorFeed#">
+			<CFABORT>
+		</CFIF>
+<CFELSE>
+		<CFSET UserFeed = deserializeJSON(#cfhttp.fileContent#)>
+</CFIF>
+
+<CFSET myImagesURL = "userfeed.cfm?access_token=#cookie.instaAccessCode#&user=#cookie.instaFullName#&userid=#cookie.instaMyID#">
+<CFSET followsURL = "follows.cfm?userID=#userID#">
+<CFSET followedByURL = "followedBy.cfm?userID=#userID#">
 
 
 <HTML>
@@ -75,12 +76,7 @@
 
 	<div class="container-fluid" style="border:0px dashed blue;">
 
-	<CFIF URL.userid EQ "">
-		<CFSET userInfoURL = "https://api.instagram.com/v1/users/#cookie.instaMyID#/?access_token=#cookie.instaAccessCode#">
-	<CFELSE>
-		<CFSET userInfoURL = "https://api.instagram.com/v1/users/#URL.userid#/?access_token=#cookie.instaAccessCode#">
-	</CFIF>
-
+	<CFSET userInfoURL = "https://api.instagram.com/v1/users/#userID#/?access_token=#cookie.instaAccessCode#">
 	<cfhttp url="#userInfoURL#" method="get" resolveurl="true" result="userInfo"/>
 	<CFSET currentUserInfo = deserializeJSON(#userInfo.fileContent#)>
 
@@ -89,16 +85,9 @@
 			<h2 id="userTitle">#currentUserInfo.data.full_name# Image Feed</h2>
 			<br />
 			<div class="countsDiv">
-				<CFIF URL.userid EQ "">
-						<a href="#myImagesURL#" class="btn btn-success">Images: #currentUserInfo.data.counts.media#</a>
-						<a href="#followsURL#?count=#currentUserInfo.data.counts.follows#" class="btn btn-info">Following: #currentUserInfo.data.counts.follows#</a>
-						<a href="#followedByURL#?count=#currentUserInfo.data.counts.followed_by#" class="btn btn-primary">Followed By: #currentUserInfo.data.counts.followed_by#</a>
-		  	<CFELSE>
-						<a href="#myImagesURL#" class="btn btn-success">Images: #currentUserInfo.data.counts.media#</a>
-						<a href="#followsURL#&count=#currentUserInfo.data.counts.follows#" class="btn btn-info">Following: #currentUserInfo.data.counts.follows#</a>
-						<a href="#followedByURL#&count=#currentUserInfo.data.counts.followed_by#" class="btn btn-primary">Followed By: #currentUserInfo.data.counts.followed_by#</a>
-				</CFIF>
-
+					<a href="#myImagesURL#" class="btn btn-success">Images: #currentUserInfo.data.counts.media#</a>
+					<a href="#followsURL#&count=#currentUserInfo.data.counts.follows#" class="btn btn-info">Following: #currentUserInfo.data.counts.follows#</a>
+					<a href="#followedByURL#&count=#currentUserInfo.data.counts.followed_by#" class="btn btn-primary">Followed By: #currentUserInfo.data.counts.followed_by#</a>
 			</div>
 			<div class="profileBioDiv">
 				#currentUserInfo.data.bio#
@@ -131,7 +120,7 @@
 		<div class="moreDiv">
 			<center>
 				<CFIF isDefined("userfeed.pagination.next_max_id")>
-				  <a href="userfeed.cfm?max_id=#userfeed.pagination.next_max_id#&access_token=#cookie.instaAccessCode#&user=#URL.user#&userid=#URL.userid#"><i class="fa fa-forward fa-3x"></i><br>Next</a>
+				  <a href="userfeed.cfm?max_id=#userfeed.pagination.next_max_id#&access_token=#cookie.instaAccessCode#&userid=#userID#"><i class="fa fa-forward fa-3x"></i><br>Next</a>
 			  </CFIF>
 			</center>
 		</div>

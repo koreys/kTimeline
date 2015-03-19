@@ -59,7 +59,23 @@
         </div>
         <div class="media-body">
             <h4 class="media-heading">#commentsDetails.data[#i#].from.full_name# <small>(#commentsDetails.data[#i#].from.username#)</small></h4>
-            #commentsDetails.data[#i#].text#
+            <!--- search Comment for @ usernames --->
+  							<cfset commentArray = #listToArray(#commentsDetails.data[#i#].text#, " ")#>
+  							<cfset commentArLen = ArrayLen(commentArray)>
+  							<!---<CFDUMP var="#captionArray#">--->
+  							<CFSET commentUserNamesAr = arrayNew(1)>
+  							<CFLOOP from="1" To="#commentArLen#" index="x">
+  								<CFIF TRIM(LEFT(commentArray[#x#],1)) EQ "@">
+  									<CFSET temp = ArrayAppend(commentUserNamesAr, #commentArray[#x#]#)>
+  								</CFIF>
+  							</CFLOOP>
+  							<!---<CFDUMP var="#commentUserNamesAr#">--->
+  							<CFSET newCommentTxt = "#commentsDetails.data[#i#].text#">
+  							<CFLOOP array="#commentUserNamesAr#" index="un">
+  								  <CFSET newCommentTxt = #REPLACE(#newCommentTxt#, #un#, "<a href='userfeed.cfm?access_token=#cookie.instaAccessCode#&username=#un#'>" & #un# & "</a>")#>
+  							</CFLOOP>
+  					<!---End Search for usernames --->
+  					#newCommentTxt#<br />
         </div>
       </div>
   </CFLOOP>
