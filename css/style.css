@@ -1,3 +1,8 @@
+/* import two google fonts 'Ovo and Muli' */
+@import url(http://fonts.googleapis.com/css?family=Muli);
+  h2,html,a {
+    font-family: 'Muli'
+  }
 
   .profilePic {
     width: 135px;
@@ -39,6 +44,7 @@
     display: inline;
     border: 0px dashed blue;
     float: left;
+    font-family: 'Muli'
   }
   .likesAndCommentBlock {
     display: inline;

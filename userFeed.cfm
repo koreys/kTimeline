@@ -26,15 +26,18 @@
 <CFIF URL.username EQ "" AND URL.userID EQ "">
 		<CFIF URL.max_id NEQ "">
 			<CFSET feedURL = "https://api.instagram.com/v1/users/self/feed?access_token=#cookie.instaAccessCode#&max_id=#URL.max_id#">
+			<CFSET self = "true">
 		<CFELSE>
 			<CFSET feedURL = "https://api.instagram.com/v1/users/self/feed?access_token=#cookie.instaAccessCode#">
+			<CFSET self = "true">
 		</CFIF>
 <CFELSE>
 		<CFIF URL.max_id NEQ "">
 			<CFSET feedURL = "https://api.instagram.com/v1/users/#userID#/media/recent/?access_token=#cookie.instaAccessCode#&max_id=#URL.max_id#">
+		  <CFSET self = "false">
 		<CFELSE>
 			<CFSET feedURL = "https://api.instagram.com/v1/users/#userID#/media/recent/?access_token=#cookie.instaAccessCode#">
-
+			<CFSET self = "false">
 		</CFIF>
 </CFIF>
 
@@ -120,8 +123,12 @@
 		<div class="moreDiv">
 			<center>
 				<CFIF isDefined("userfeed.pagination.next_max_id")>
-				  <a href="userfeed.cfm?max_id=#userfeed.pagination.next_max_id#&access_token=#cookie.instaAccessCode#&userid=#userID#"><i class="fa fa-forward fa-3x"></i><br>Next</a>
-			  </CFIF>
+					<CFIF self EQ "true">
+				  		<a href="userfeed.cfm?max_id=#userfeed.pagination.next_max_id#&access_token=#cookie.instaAccessCode#"><i class="fa fa-forward fa-3x"></i><br>Next</a>
+			  	<CFELSE>
+						<a href="userfeed.cfm?max_id=#userfeed.pagination.next_max_id#&access_token=#cookie.instaAccessCode#&userid=#userID#"><i class="fa fa-forward fa-3x"></i><br>Next</a>
+					</CFIF>
+				</CFIF>
 			</center>
 		</div>
 	</div>

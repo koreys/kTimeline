@@ -121,7 +121,7 @@
 
 		#map-canvas {
 			width: 640px;
-			height: 520px;
+			height: 380px;
 		}
 		#map-canvas img {
 			max-width: none;
@@ -247,7 +247,7 @@
 							<!---<CFDUMP var="#tagsAr#">--->
 							<CFLOOP array="#tagsAr#" index="tag">
 								<CFSET newCaptionTxt = #REPLACE(#newCaptionTxt#, #tag#, "<a href='hashtag.cfm?hashtag=#RemoveChars(#tag#,1,1)#'>" & #tag# & "</a>")#>
-							</CFLOOP> RemoveChars(string, start, count)
+							</CFLOOP>
 					<!---End Search for hashtags --->
 					#newCaptionTxt#<br>
 				</CFIF>
@@ -255,7 +255,7 @@
 				<CFSET commentsLen = ARRAYLEN(imgDetails.data.comments.data)>
 				<CFIF isDeFined("imgDetails.data.comments.count")>
 					<CFIF #imgDetails.data.comments.count# GT #commentsLen#>
-						<a href="comments.cfm?mediaID=#URL.imgID#&CommentsCount=#imgDetails.data.comments.count#&imgURL=#imgDetails.data.images.low_resolution.url#">Load More Comments</a> <br />
+						<a href="comments.cfm?mediaID=#URL.imgID#&CommentsCount=#imgDetails.data.comments.count#&imgURL=#imgDetails.data.images.low_resolution.url#"><b>Load More Comments...</b></a> <br />
 					</CFIF>
 				</CFIF>
 

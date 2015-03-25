@@ -43,7 +43,7 @@
   <div style="clear:both;">&nbsp;</div>
 </div>
 
-<!---<CFDUMP var="#followsDetails#">--->
+<CFDUMP var="#followedByDetails#">
 
 <CFSET followedByArrLen = ARRAYLEN(#followedByDetails.Data#)>
 
