@@ -28,6 +28,7 @@
 			<CFSET feedURL = "https://api.instagram.com/v1/users/self/feed?access_token=#cookie.instaAccessCode#&max_id=#URL.max_id#">
 			<CFSET self = "true">
 		<CFELSE>
+			<!---Korey Test--->
 			<CFSET feedURL = "https://api.instagram.com/v1/users/self/feed?access_token=#cookie.instaAccessCode#">
 			<CFSET self = "true">
 		</CFIF>
