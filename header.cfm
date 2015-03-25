@@ -46,7 +46,7 @@
 		  </form>
 
 
-			<p class="navbar-text navbar-right">Beta Built: 3.18.15</p>
+			<p class="navbar-text navbar-right">Beta Built: 3.25.15</p>
 
 
 		</div><!-- /.navbar-collapse -->
