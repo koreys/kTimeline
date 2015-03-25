@@ -17,7 +17,7 @@
 			<cfhttpparam type="formField" name="client_id" value="578b4fc24c07486fae6fae76d398b980" />
 			<cfhttpparam type="formField" name="client_secret" value="dabc6ff46c5340e8b79a596955378585" />
 			<cfhttpparam type="formField" name="grant_type" value="authorization_code" />
-			<cfhttpparam type="formField" name="redirect_uri" value="http://korey.me/Auth.cfm" />
+			<cfhttpparam type="formField" name="redirect_uri" value="http://stream.korey.me/Auth.cfm" />
 			<cfhttpparam type="formField" name="code" value="#URL.code#" />
 		</cfhttp>
 		<!---
