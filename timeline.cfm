@@ -1,4 +1,4 @@
-<CFSET redirectUri = "stream.korey.me/Auth.cfm">
+<CFSET redirectUri = "http://stream.korey.me/Auth.cfm">
 <doctype html>
 <html>
 <head>
