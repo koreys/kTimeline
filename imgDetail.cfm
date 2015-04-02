@@ -260,7 +260,7 @@
 				</CFIF>
 
 				<CFLOOP from="1" to="#commentsLen#" index="i">
-					<b><a href="userfeed.cfm?access_token=#URL.access_token#&userid=#imgDetails.data.comments.data[#i#].from.id#&user=#imgDetails.data.comments.data[#i#].from.full_name#">#imgDetails.data.comments.data[#i#].from.full_name#</a></b>
+					<b><a href="userfeed.cfm?userid=#imgDetails.data.comments.data[#i#].from.id#&user=#imgDetails.data.comments.data[#i#].from.full_name#">#imgDetails.data.comments.data[#i#].from.full_name#</a></b>
 					<!--- search Comment for @ usernames --->
 							<cfset commentArray = #listToArray(imgDetails.data.comments.data[#i#].text, " ")#>
 							<cfset commentArLen = ArrayLen(commentArray)>
@@ -274,7 +274,7 @@
 							<!---<CFDUMP var="#commentUserNamesAr#">--->
 							<CFSET newCommentTxt = "#imgDetails.data.comments.data[#i#].text#">
 							<CFLOOP array="#commentUserNamesAr#" index="un">
-								  <CFSET newCommentTxt = #REPLACE(#newCommentTxt#, #un#, "<a href='userfeed.cfm?access_token=#URL.access_token#&username=#un#'>" & #un# & "</a>")#>
+								  <CFSET newCommentTxt = #REPLACE(#newCommentTxt#, #un#, "<a href='userfeed.cfm?username=#un#'>" & #un# & "</a>")#>
 							</CFLOOP>
 					<!---End Search for usernames --->
 					<!--- search Comment for Hashtags --->
@@ -310,8 +310,11 @@
 			<div id="map-canvas"></div>
 		</div><!-- End Comments Div -->
 
-
-
+		<!---Make call and get relationship details --->
+		<CFSET relationshipURL = "https://api.instagram.com/v1/users/#imgDetails.data.user.id#/relationship?access_token=#cookie.instaAccessCode#">
+		<cfhttp url="#relationshipURL#" method="get" resolveurl="true" />
+		<CFSET relationshipDetails = #deserializeJSON(cfhttp.fileContent)#>
+		<CFDUMP var="#relationshipDetails#">
 
 
 	</div><!-- End Container fluid -->

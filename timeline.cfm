@@ -1,4 +1,4 @@
-<CFSET redirectUri = "http://stream.korey.me/Auth.cfm">
+
 <doctype html>
 <html>
 <head>
@@ -27,7 +27,7 @@
 			<center>
 				<h2>Welcome to kTimeline</h2>
 				<h5>An Instagram Client for your browser</h5>
-				<a class="btn btn-primary" href="https://api.instagram.com/oauth/authorize/?client_id=578b4fc24c07486fae6fae76d398b980&redirect_uri=#redirectUri#&response_type=code&scope=likes">Click here to get authenticated!!</a>
+				<a class="btn btn-primary" href="https://api.instagram.com/oauth/authorize/?client_id=#APPLICATION.CLIENT_ID#&redirect_uri=#APPLICATION.REDIRECTURI#&response_type=code&scope=likes+relationships">Click here to get authenticated!!</a>
 			</center>
 		</CFIF>
 	</div><!-- End LoginBox -->

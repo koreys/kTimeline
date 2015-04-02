@@ -46,7 +46,7 @@
 		  </form>
 
 
-			<p class="navbar-text navbar-right">Beta Built: 3.25.15</p>
+			<p class="navbar-text navbar-right"><CFIF #APPLICATION.serverName# EQ "Dev">DEV SERVER - #this.name#</CFIF> Build: 3.26.15.01</p>
 
 
 		</div><!-- /.navbar-collapse -->

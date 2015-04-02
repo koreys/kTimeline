@@ -14,10 +14,10 @@
 		Attempting cfhttp call...<br />
 		--->
 		<cfhttp url="https://api.instagram.com/oauth/access_token" method="post" resolveurl="true">
-			<cfhttpparam type="formField" name="client_id" value="578b4fc24c07486fae6fae76d398b980" />
-			<cfhttpparam type="formField" name="client_secret" value="dabc6ff46c5340e8b79a596955378585" />
+			<cfhttpparam type="formField" name="client_id" value="#APPLICATION.client_id#" />
+			<cfhttpparam type="formField" name="client_secret" value="#APPLICATION.client_secret#" />
 			<cfhttpparam type="formField" name="grant_type" value="authorization_code" />
-			<cfhttpparam type="formField" name="redirect_uri" value="http://stream.korey.me/Auth.cfm" />
+			<cfhttpparam type="formField" name="redirect_uri" value="#APPLICATION.redirectURI#" />
 			<cfhttpparam type="formField" name="code" value="#URL.code#" />
 		</cfhttp>
 		<!---
@@ -43,7 +43,7 @@
 				<CFCOOKIE name="instaFullName" value="#OAuthToken.user.full_name#">
 				<CFCOOKIE name="instaProfilePic" value="#OAuthToken.user.profile_picture#">
 				<CFCOOKIE name="instaMyID" value="#OAuthToken.user.id#">
-				<CFLOCATION URL="userfeed.cfm?access_Token=#OAuthToken.access_token#&user=#OAuthToken.user.full_name#" />
+				<CFLOCATION URL="userfeed.cfm" />
 			</CFIF>
 
 
