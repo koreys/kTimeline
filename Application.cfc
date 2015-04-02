@@ -24,7 +24,6 @@
 			<CFSET SERVERNAME = "YOUR-SERVER-NAME"> //set to 'Dev' or 'Live'
 
 			--->
-			<h5>Settings.cfm loaded successfully - App name: <cfoutput>#this.name#</cfoutput></h5>
 			<CFSET APPLICATION.REDIRECTURI = "http://test.korey.me/Auth.cfm">
 			<CFSET APPLICATION.CLIENT_ID = "dbd3c8d7e0444cf6ab6b50de5f818776">
 			<CFSET APPLICATION.CLIENT_SECRET = "7e33a2c5497840df819debc0a575be71">
